@@ -196,28 +196,14 @@ section { padding: 100px 0; max-width: 1000px; margin: 0 auto; }
 .avatar {
   position: relative; z-index: 2;
   width: 100%; aspect-ratio: 1;
-  border-radius: 4px;
+  border-radius: 50%;
   background: var(--bg-light); overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-serif);
-  font-size: 100px; color: var(--slate-light); font-weight: 500;
-  transition: transform 0.3s;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.12);
 }
-.avatar::before {
-  content: ''; position: absolute; inset: 0;
-  background: var(--accent); mix-blend-mode: screen;
-  opacity: 0.25; transition: opacity 0.3s; pointer-events: none;
+.avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
 }
-.avatar-box::after {
-  content: ''; position: absolute;
-  top: 15px; left: 15px; right: -15px; bottom: -15px;
-  border: 2px solid var(--accent);
-  border-radius: 4px; z-index: 1;
-  transition: all 0.3s;
-}
-.avatar-box:hover .avatar { transform: translate(-4px, -4px); }
-.avatar-box:hover .avatar::before { opacity: 0; }
-.avatar-box:hover::after { top: 20px; left: 20px; right: -20px; bottom: -20px; }
 
 /* Projects - Flexbox 布局，更稳定 */
 .project {
