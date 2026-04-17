@@ -52,7 +52,7 @@ function displayLabel(p: Place): string {
     </div>
 
     <div class="map-wrap reveal">
-      <svg id="travel-map" aria-label="世界足迹地图"></svg>
+      <svg id="travel-map" viewBox="0 0 1000 500" aria-label="世界足迹地图"></svg>
       <div id="map-loading" class="map-loading">地图加载中…</div>
     </div>
 
@@ -101,7 +101,7 @@ function displayLabel(p: Place): string {
 </script>
 
 <script>
-  import { geoMercator, geoPath } from 'd3-geo';
+  import { geoNaturalEarth1, geoPath, geoArea } from 'd3-geo';
   import { feature, mesh } from 'topojson-client';
 
   type Place = {
@@ -131,19 +131,10 @@ function displayLabel(p: Place): string {
   const loadingEl = document.getElementById('map-loading');
   if (!svgEl) throw new Error('travel-map not found');
 
-  const width = svgEl.clientWidth;
-  const height = svgEl.clientHeight;
+  const width = 1000;
+  const height = 500;
 
-  // Fit projection to Asia bounding box [65°E-155°E, -12°S-55°N]
-  const asiaBbox = {
-    type: 'Feature' as const,
-    properties: {},
-    geometry: {
-      type: 'Polygon' as const,
-      coordinates: [[[65, -12], [155, -12], [155, 55], [65, 55], [65, -12]]],
-    },
-  };
-  const projection = geoMercator().fitSize([width, height], asiaBbox);
+  const projection = geoNaturalEarth1().fitSize([width, height], { type: 'Sphere' });
   const pathGen = geoPath().projection(projection);
 
   function makePath(d: string | null, fill: string, stroke: string, strokeW: number) {
@@ -162,6 +153,10 @@ function displayLabel(p: Place): string {
       fetch('/data/china-provinces.json').then(r => r.json()),
     ]);
 
+    // Layer 0: Sphere background (ocean — matches page bg, hides any transparent gaps)
+    const sphereBg = makePath(pathGen({ type: 'Sphere' }), '#0a192f', 'none', 0);
+    if (sphereBg) svgEl.appendChild(sphereBg);
+
     // Layer 1: World countries
     const countries = feature(worldData as any, (worldData as any).objects.countries) as any;
     for (const f of countries.features) {
@@ -171,7 +166,7 @@ function displayLabel(p: Place): string {
       if (isChina) {
         fill = 'rgba(255,255,255,0.01)'; // China handled by province layer
       } else if (visitedISOs.has(iso)) {
-        fill = 'rgba(100,255,218,0.08)';
+        fill = 'rgba(100,255,218,0.10)';
       } else {
         fill = 'rgba(255,255,255,0.02)';
       }
@@ -184,23 +179,38 @@ function displayLabel(p: Place): string {
     const borderEl = makePath(pathGen(borders as any), 'none', 'rgba(255,255,255,0.10)', 0.4);
     if (borderEl) svgEl.appendChild(borderEl);
 
-    // Layer 2: China province overlay (GeoJSON, no topojson conversion needed)
+    // Layer 2: China province overlay
+    // china-provinces.json uses CW ring winding (d3-geo expects CCW per RFC 7946).
+    // geoArea returns ~4π for inverted features; reverse all rings to fix winding.
+    function rewindFeature(f: any): any {
+      const geom = f?.geometry;
+      if (!geom) return f;
+      const rev = (ring: number[][]) => ring.slice().reverse();
+      if (geom.type === 'Polygon') {
+        return { ...f, geometry: { ...geom, coordinates: geom.coordinates.map(rev) } };
+      }
+      if (geom.type === 'MultiPolygon') {
+        return { ...f, geometry: { ...geom, coordinates: geom.coordinates.map((poly: number[][][]) => poly.map(rev)) } };
+      }
+      return f;
+    }
+
     for (const f of (chinaData as any).features) {
       const name: string = f.properties?.name ?? '';
-      const isTaiwan = name.includes('台湾');
-      if (isTaiwan) continue;
+      if (name.includes('台湾')) continue;
 
       const isHKFeature = name.includes('香港');
       const isMacauFeature = name.includes('澳门');
       const isVisitedProvince = [...visitedRegions].some(r => name.includes(r));
 
       let fill: string;
-      if (isHKFeature && hasHK) fill = 'rgba(100,255,218,0.15)';
-      else if (isMacauFeature && hasMacau) fill = 'rgba(100,255,218,0.15)';
-      else if (isVisitedProvince) fill = 'rgba(100,255,218,0.08)';
+      if (isHKFeature && hasHK) fill = 'rgba(100,255,218,0.10)';
+      else if (isMacauFeature && hasMacau) fill = 'rgba(100,255,218,0.10)';
+      else if (isVisitedProvince) fill = 'rgba(100,255,218,0.06)';
       else fill = 'transparent';
 
-      const el = makePath(pathGen(f), fill, 'rgba(255,255,255,0.06)', 0.3);
+      const fixed = geoArea(f) > 2 * Math.PI ? rewindFeature(f) : f;
+      const el = makePath(pathGen(fixed), fill, 'rgba(255,255,255,0.06)', 0.3);
       if (el) svgEl.appendChild(el);
     }
 
@@ -215,7 +225,7 @@ function displayLabel(p: Place): string {
       circle.setAttribute('cx', String(x));
       circle.setAttribute('cy', String(y));
       const isBase = p.type === 'base';
-      circle.setAttribute('r', isBase ? '5' : '3.5');
+      circle.setAttribute('r', isBase ? '4' : '3');
       circle.setAttribute('fill', isBase ? '#f59e0b' : '#64ffda');
       circle.setAttribute('stroke', isBase ? 'rgba(100,50,0,0.6)' : 'rgba(0,60,50,0.6)');
       circle.setAttribute('stroke-width', '0.8');
@@ -273,8 +283,7 @@ function displayLabel(p: Place): string {
   .map-wrap {
     position: relative;
     width: 100%;
-    height: 62vh;
-    min-height: 380px;
+    aspect-ratio: 2 / 1;
     margin-bottom: 60px;
     background: var(--bg);
     border: 1px solid var(--slate-dark);
@@ -347,10 +356,8 @@ function displayLabel(p: Place): string {
 
   @media (max-width: 1099px) {
     .travel-main { padding: 120px 50px 100px; }
-    .map-wrap { height: 55vh; }
   }
   @media (max-width: 699px) {
     .travel-main { padding: 100px 20px 80px; }
-    .map-wrap { height: 45vh; min-height: 280px; }
   }
 </style>
