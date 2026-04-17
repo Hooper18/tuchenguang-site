@@ -96,7 +96,6 @@ nav.scrolled { height: 70px; box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
 .side-items a:hover { color: var(--accent); transform: translateY(-3px); }
 .side-items svg { width: 22px; height: 22px; }
 .side-right .side-items { writing-mode: vertical-rl; }
-.side-right .side-items::after { height: calc(75px + 130px); }
 .side-right .side-items a {
   font-family: var(--font-mono); font-size: 12px;
   letter-spacing: 0.1em; text-decoration: none; color: var(--slate);
