@@ -1,0 +1,55 @@
+---
+interface Props {
+  images: string[];
+  id: string;
+}
+
+const { images, id } = Astro.props;
+---
+
+<div class="carousel" data-carousel-id={id}>
+  <div class="phone-frame">
+    <div class="phone-screen">
+      {images.map((src, i) => (
+        <div class={`slide${i === 0 ? ' active' : ''}`}>
+          <img src={src} alt={`Screenshot ${i + 1}`} loading="lazy" />
+        </div>
+      ))}
+    </div>
+  </div>
+  <button class="arrow prev" aria-label="上一张">&#8249;</button>
+  <button class="arrow next" aria-label="下一张">&#8250;</button>
+  <div class="dots">
+    {images.map((_, i) => (
+      <button class={`dot${i === 0 ? ' active' : ''}`} data-idx={i}></button>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.carousel').forEach((carousel) => {
+    const slides = carousel.querySelectorAll<HTMLElement>('.slide');
+    const dots = carousel.querySelectorAll<HTMLElement>('.dot');
+    const prev = carousel.querySelector<HTMLElement>('.arrow.prev');
+    const next = carousel.querySelector<HTMLElement>('.arrow.next');
+    let current = 0;
+    const total = slides.length;
+
+    function show(idx: number) {
+      current = ((idx % total) + total) % total;
+      slides.forEach((s, i) => s.classList.toggle('active', i === current));
+      dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    prev?.addEventListener('click', (e) => { e.stopPropagation(); show(current - 1); });
+    next?.addEventListener('click', (e) => { e.stopPropagation(); show(current + 1); });
+    dots.forEach((d, i) => d.addEventListener('click', (e) => { e.stopPropagation(); show(i); }));
+
+    function keyHandler(e: KeyboardEvent) {
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    }
+    carousel.addEventListener('mouseenter', () => document.addEventListener('keydown', keyHandler));
+    carousel.addEventListener('mouseleave', () => document.removeEventListener('keydown', keyHandler));
+  });
+</script>

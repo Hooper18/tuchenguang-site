@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import SideLeft from '../components/SideLeft.astro';
+import SideRight from '../components/SideRight.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Projects from '../components/Projects.astro';
+import Now from '../components/Now.astro';
+import Travel from '../components/Travel.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout>
+  <Nav />
+  <SideLeft />
+  <SideRight />
+  <main>
+    <Hero />
+    <About />
+    <Projects />
+    <Now />
+    <Travel />
+    <Contact />
+  </main>
+  <Footer />
+</BaseLayout>

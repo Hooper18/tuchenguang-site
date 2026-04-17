@@ -1,0 +1,16 @@
+---
+import { nowItems } from '../data/now';
+---
+
+<section id="now">
+  <h2 class="section-heading reveal"><span class="num">03.</span>正在做</h2>
+  <div class="now-timeline reveal">
+    {nowItems.map((item) => (
+      <div class={`now-item${item.status === 'active' ? ' active' : ''}`}>
+        <span class="now-status">{item.label}</span>
+        <h3 class="now-title">{item.title}</h3>
+        <p class="now-desc" set:html={item.description} />
+      </div>
+    ))}
+  </div>
+</section>
