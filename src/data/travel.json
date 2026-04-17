@@ -1,0 +1,37 @@
+{
+  "places": [
+    { "country": "中国", "region": "浙江", "city": "杭州", "lat": 30.2741, "lng": 120.1551, "date": null, "type": "base", "note": "老家" },
+    { "country": "马来西亚", "region": null, "city": "吉隆坡", "lat": 3.1390, "lng": 101.6869, "date": "2025-09", "type": "base", "note": "在读" },
+
+    { "country": "中国", "region": "江西", "city": "萍乡", "lat": 27.6229, "lng": 113.8546, "date": "2024-06", "type": "travel", "note": "武功山" },
+    { "country": "中国", "region": "河南", "city": "周口", "lat": 33.6256, "lng": 114.6972, "date": "2024-08", "type": "travel", "note": null },
+    { "country": "中国", "region": "江苏", "city": "南京", "lat": 32.0603, "lng": 118.7969, "date": "2025-01", "type": "travel", "note": null },
+    { "country": "中国", "region": "浙江", "city": "宁波", "lat": 29.8683, "lng": 121.5440, "date": "2025-04", "type": "travel", "note": null },
+    { "country": "中国", "region": "上海", "city": "上海", "lat": 31.2304, "lng": 121.4737, "date": "2025-05", "type": "travel", "note": null },
+    { "country": "中国", "region": "云南", "city": "昆明", "lat": 25.0389, "lng": 102.7183, "date": "2025-07", "type": "travel", "note": null },
+    { "country": "中国", "region": "云南", "city": "丽江", "lat": 26.8721, "lng": 100.2257, "date": "2025-07", "type": "travel", "note": null },
+    { "country": "中国", "region": "云南", "city": "香格里拉", "lat": 27.8269, "lng": 99.7084, "date": "2025-07", "type": "travel", "note": null },
+    { "country": "中国", "region": "湖北", "city": "孝感", "lat": 30.9264, "lng": 113.9164, "date": "2025-08", "type": "travel", "note": null },
+    { "country": "中国", "region": "河南", "city": "平顶山", "lat": 33.7656, "lng": 113.1924, "date": "2025-08", "type": "travel", "note": null },
+    { "country": "中国", "region": "辽宁", "city": "沈阳", "lat": 41.8057, "lng": 123.4315, "date": "2026-01", "type": "travel", "note": null },
+    { "country": "中国", "region": "黑龙江", "city": "哈尔滨", "lat": 45.8038, "lng": 126.5349, "date": "2026-01", "type": "travel", "note": null },
+    { "country": "中国", "region": "海南", "city": "海口", "lat": 20.0440, "lng": 110.1999, "date": "2026-02", "type": "travel", "note": null },
+    { "country": "中国", "region": "四川", "city": "成都", "lat": 30.5728, "lng": 104.0668, "date": "2026-02", "type": "travel", "note": null },
+    { "country": "中国", "region": "重庆", "city": "重庆", "lat": 29.4316, "lng": 106.9123, "date": "2026-02", "type": "travel", "note": null },
+
+    { "country": "中国香港", "region": null, "city": "香港", "lat": 22.3193, "lng": 114.1694, "date": "2026-04", "type": "travel", "note": null },
+    { "country": "中国澳门", "region": null, "city": "澳门", "lat": 22.1987, "lng": 113.5439, "date": "2026-04", "type": "travel", "note": null },
+
+    { "country": "马来西亚", "region": null, "city": "马六甲", "lat": 2.1896, "lng": 102.2501, "date": "2025-12", "type": "travel", "note": null },
+    { "country": "新加坡", "region": null, "city": "新加坡", "lat": 1.3521, "lng": 103.8198, "date": "2026-01", "type": "travel", "note": null },
+    { "country": "马来西亚", "region": null, "city": "槟城", "lat": 5.4164, "lng": 100.3327, "date": "2026-01", "type": "travel", "note": null },
+    { "country": "马来西亚", "region": null, "city": "兰卡威", "lat": 6.3500, "lng": 99.8000, "date": "2026-01", "type": "travel", "note": null },
+    { "country": "印度尼西亚", "region": null, "city": "巴厘岛", "lat": -8.3405, "lng": 115.0920, "date": "2026-02", "type": "travel", "note": "登巴萨" },
+    { "country": "柬埔寨", "region": null, "city": "暹粒", "lat": 13.3633, "lng": 103.8564, "date": "2026-03", "type": "travel", "note": null },
+    { "country": "日本", "region": null, "city": "大阪", "lat": 34.6937, "lng": 135.5023, "date": "2026-04", "type": "travel", "note": null },
+    { "country": "日本", "region": null, "city": "京都", "lat": 35.0116, "lng": 135.7681, "date": "2026-04", "type": "travel", "note": null },
+    { "country": "日本", "region": null, "city": "东京", "lat": 35.6762, "lng": 139.6503, "date": "2026-04", "type": "travel", "note": null },
+    { "country": "日本", "region": null, "city": "镰仓", "lat": 35.3193, "lng": 139.5467, "date": "2026-04", "type": "travel", "note": null },
+    { "country": "韩国", "region": null, "city": "首尔", "lat": 37.5665, "lng": 126.9780, "date": "2026-04", "type": "travel", "note": null }
+  ]
+}
