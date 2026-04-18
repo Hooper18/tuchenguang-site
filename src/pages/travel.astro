@@ -51,6 +51,7 @@ function displayLabel(p: Place): string {
       <p class="travel-desc">走过的地方，记一记。</p>
     </div>
 
+    <div id="map-tooltip" class="map-tooltip" style="display:none"></div>
     <div class="map-wrap reveal">
       <svg id="travel-map" viewBox="0 0 1000 500" aria-label="世界足迹地图"></svg>
       <div id="map-loading" class="map-loading">地图加载中…</div>
@@ -103,6 +104,8 @@ function displayLabel(p: Place): string {
 <script>
   import { geoNaturalEarth1, geoPath, geoArea } from 'd3-geo';
   import { feature, mesh } from 'topojson-client';
+  import { zoom, zoomIdentity } from 'd3-zoom';
+  import { select } from 'd3-selection';
 
   type Place = {
     country: string; region: string | null; city: string;
@@ -133,6 +136,7 @@ function displayLabel(p: Place): string {
 
   const width = 1000;
   const height = 500;
+  let currentZoomK = 1;
 
   const projection = geoNaturalEarth1().fitSize([width, height], { type: 'Sphere' });
   const pathGen = geoPath().projection(projection);
@@ -153,9 +157,16 @@ function displayLabel(p: Place): string {
       fetch('/data/china-provinces.json').then(r => r.json()),
     ]);
 
+    const zoomGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    zoomGroup.setAttribute('id', 'zoom-group');
+    svgEl.appendChild(zoomGroup);
+
     // Layer 0: Sphere background (ocean — matches page bg, hides any transparent gaps)
     const sphereBg = makePath(pathGen({ type: 'Sphere' }), '#0a192f', 'none', 0);
-    if (sphereBg) svgEl.appendChild(sphereBg);
+    if (sphereBg) {
+      sphereBg.dataset.originalStrokeWidth = sphereBg.getAttribute('stroke-width') || '0';
+      zoomGroup.appendChild(sphereBg);
+    }
 
     // Layer 1: World countries
     const countries = feature(worldData as any, (worldData as any).objects.countries) as any;
@@ -171,13 +182,19 @@ function displayLabel(p: Place): string {
         fill = 'rgba(255,255,255,0.02)';
       }
       const el = makePath(pathGen(f), fill, 'rgba(255,255,255,0.08)', 0.4);
-      if (el) svgEl.appendChild(el);
+      if (el) {
+        el.dataset.originalStrokeWidth = el.getAttribute('stroke-width') || '0';
+        zoomGroup.appendChild(el);
+      }
     }
 
     // Layer 1b: Country borders mesh
     const borders = mesh(worldData as any, (worldData as any).objects.countries, (a: any, b: any) => a !== b);
     const borderEl = makePath(pathGen(borders as any), 'none', 'rgba(255,255,255,0.10)', 0.4);
-    if (borderEl) svgEl.appendChild(borderEl);
+    if (borderEl) {
+      borderEl.dataset.originalStrokeWidth = borderEl.getAttribute('stroke-width') || '0';
+      zoomGroup.appendChild(borderEl);
+    }
 
     // Layer 2: China province overlay
     // china-provinces.json uses CW ring winding (d3-geo expects CCW per RFC 7946).
@@ -211,7 +228,10 @@ function displayLabel(p: Place): string {
 
       const fixed = geoArea(f) > 2 * Math.PI ? rewindFeature(f) : f;
       const el = makePath(pathGen(fixed), fill, 'rgba(255,255,255,0.06)', 0.3);
-      if (el) svgEl.appendChild(el);
+      if (el) {
+        el.dataset.originalStrokeWidth = el.getAttribute('stroke-width') || '0';
+        zoomGroup.appendChild(el);
+      }
     }
 
     // Layer 3: City dots
@@ -229,8 +249,90 @@ function displayLabel(p: Place): string {
       circle.setAttribute('fill', isBase ? '#f59e0b' : '#64ffda');
       circle.setAttribute('stroke', isBase ? 'rgba(100,50,0,0.6)' : 'rgba(0,60,50,0.6)');
       circle.setAttribute('stroke-width', '0.8');
-      svgEl.appendChild(circle);
+      circle.dataset.city = p.city;
+      circle.dataset.type = p.type;
+      circle.dataset.date = p.date ?? '';
+      circle.dataset.country = p.country;
+      circle.dataset.note = p.note ?? '';
+      circle.style.cursor = 'pointer';
+
+      circle.addEventListener('mouseenter', (e) => {
+        const el = e.currentTarget as SVGCircleElement;
+        const city = el.dataset.city ?? '';
+        const type = el.dataset.type ?? '';
+        const date = el.dataset.date ?? '';
+        const note = el.dataset.note ?? '';
+
+        let label = city;
+        if (type === 'base' && note === '老家') {
+          label = `${city} · 老家`;
+        } else if (type === 'base' && note === '在读' && date) {
+          label = `${city} · 在读 ${date} 至今`;
+        } else if (type === 'travel' && date) {
+          const [y, m] = date.split('-');
+          label = `${city} · ${y} 年 ${Number(m)} 月`;
+        }
+
+        const tooltipEl = document.getElementById('map-tooltip');
+        if (!tooltipEl) return;
+        tooltipEl.textContent = label;
+        tooltipEl.style.display = 'block';
+
+        // position: fixed → 直接用 viewport 坐标，不受 overflow: hidden 影响
+        const circleRect = el.getBoundingClientRect();
+        tooltipEl.style.left = `${circleRect.right + 8}px`;
+        tooltipEl.style.top = `${circleRect.top - 28}px`;
+
+        el.setAttribute('stroke', '#64ffda');
+        el.setAttribute('stroke-width', String(1 / currentZoomK));
+      });
+
+      circle.addEventListener('mouseleave', (e) => {
+        const el = e.currentTarget as SVGCircleElement;
+        const tooltipEl = document.getElementById('map-tooltip');
+        if (tooltipEl) tooltipEl.style.display = 'none';
+
+        const isBase = el.dataset.type === 'base';
+        el.setAttribute('stroke', isBase ? 'rgba(100,50,0,0.6)' : 'rgba(0,60,50,0.6)');
+        el.setAttribute('stroke-width', String(0.8 / currentZoomK));
+      });
+
+      zoomGroup.appendChild(circle);
     }
+
+    const zoomBehavior = zoom<SVGSVGElement, unknown>()
+      .scaleExtent([1, 8])
+      .translateExtent([[0, 0], [width, height]])
+      .on('zoom', (event) => {
+        const { transform } = event;
+        zoomGroup.setAttribute('transform', transform.toString());
+        currentZoomK = transform.k;
+        const k = transform.k;
+
+        zoomGroup.querySelectorAll('circle').forEach((c) => {
+          const isBase = (c as SVGCircleElement).dataset.type === 'base';
+          const baseR = isBase ? 4 : 3;
+          c.setAttribute('r', String(baseR / k));
+          c.setAttribute('stroke-width', String(0.8 / k));
+        });
+
+        zoomGroup.querySelectorAll('path').forEach((p) => {
+          const original = (p as SVGPathElement).dataset.originalStrokeWidth;
+          if (original) {
+            p.setAttribute('stroke-width', String(Number(original) / k));
+          }
+        });
+
+        zoomGroup.querySelectorAll('rect').forEach((r) => {
+          const original = (r as SVGRectElement).dataset.originalStrokeWidth;
+          if (original) {
+            r.setAttribute('stroke-width', String(Number(original) / k));
+          }
+        });
+      });
+
+    // @ts-ignore d3-selection 类型和原生 SVGSVGElement 对接
+    select(svgEl).call(zoomBehavior as any);
 
     if (loadingEl) loadingEl.remove();
   } catch (err) {
@@ -295,6 +397,20 @@ function displayLabel(p: Place): string {
     height: 100%;
     display: block;
   }
+  .map-tooltip {
+    position: fixed;
+    background: #0a192f;
+    color: var(--slate-light, #ccd6f6);
+    border: 1px solid #64ffda;
+    padding: 6px 10px;
+    font-size: 13px;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    pointer-events: none;
+    z-index: 10;
+    white-space: nowrap;
+    line-height: 1.4;
+  }
+
   .map-loading {
     position: absolute;
     inset: 0;
