@@ -152,3 +152,22 @@ draft: false
 - 不要加生硬的彩色或过饱和效果
 - 不要"荧光绿大面积铺开"的设计
 - **不要未经用户同意大改整体视觉风格**
+
+---
+
+## Git 命令规范
+
+所有 git 命令必须分行执行，禁止用 `&&` 或 `;` 链接多条命令。
+
+错误示例：
+  git add -A && git status
+  git commit -m "xxx" && git push origin main
+
+正确示例：
+  git add -A
+  git status
+
+  git commit -m "xxx"
+  git push origin main
+
+理由：分行执行便于中间停下检查输出、也便于用户手动 review 每一步的结果。
