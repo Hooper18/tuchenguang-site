@@ -1,13 +1,94 @@
 ---
+const visitedCountries: string[] = (await import('../data/visited-countries.json')).default;
 ---
 
 <section id="travel">
-  <h2 class="section-heading reveal"><span class="num">04.</span>足迹</h2>
-  <div class="placeholder reveal">
-    <div class="title">&lt;WorldMap /&gt; — Coming soon</div>
-    <div class="desc">
-      这里将会是一张交互世界地图，标记我走过的城市、时间和一些代表性的照片。<br /><br />
-      目前已去过: <strong>新加坡 · 柬埔寨 · 印度尼西亚 · 日本 · 马来西亚 · 中国</strong>。
+  <h2 class="section-heading reveal"><span class="num">04.</span> 足迹</h2>
+  <p class="home-travel-desc reveal">走过的地方</p>
+  <a href="/travel" class="home-map-link" aria-label="查看完整足迹">
+    <div class="home-map-wrap">
+      <svg id="home-travel-map" viewBox="0 0 1000 500" aria-label="首页世界足迹地图缩略"></svg>
     </div>
-  </div>
+  </a>
 </section>
+
+<script is:inline define:vars={{ visitedCountries }}>
+  window.__homeVisitedCountries = visitedCountries;
+</script>
+
+<script>
+  import { geoNaturalEarth1, geoPath } from 'd3-geo';
+  import { feature, mesh } from 'topojson-client';
+
+  const svgEl = document.getElementById('home-travel-map') as SVGSVGElement | null;
+  if (svgEl) {
+    const width = 1000;
+    const height = 500;
+    const projection = geoNaturalEarth1().fitSize([width, height], { type: 'Sphere' });
+    const pathGen = geoPath().projection(projection);
+
+    function makePath(d: string | null, fill: string, stroke: string, strokeWidth: number) {
+      if (!d) return null;
+      const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      p.setAttribute('d', d);
+      p.setAttribute('fill', fill);
+      p.setAttribute('stroke', stroke);
+      p.setAttribute('stroke-width', String(strokeWidth));
+      return p;
+    }
+
+    const visited: string[] = (window as any).__homeVisitedCountries ?? [];
+
+    (async () => {
+      try {
+        const worldData: any = await fetch('/data/world-110m.json').then(r => r.json());
+
+        // Sphere 背景
+        const sphereBg = makePath(pathGen({ type: 'Sphere' } as any), '#0a192f', 'none', 0);
+        if (sphereBg) svgEl.appendChild(sphereBg);
+
+        // 国家层
+        const countries: any = feature(worldData, worldData.objects.countries);
+        for (const f of countries.features) {
+          const countryName = f.properties?.name;
+          const isVisited = visited.includes(countryName);
+          const fill = isVisited ? 'rgba(100,255,218,0.12)' : 'rgba(255,255,255,0.02)';
+          const el = makePath(pathGen(f), fill, 'rgba(255,255,255,0.08)', 0.4);
+          if (el) svgEl.appendChild(el);
+        }
+
+        // 国家边界 mesh
+        const borders = mesh(worldData, worldData.objects.countries, (a: any, b: any) => a !== b);
+        const borderEl = makePath(pathGen(borders as any), 'none', 'rgba(255,255,255,0.10)', 0.4);
+        if (borderEl) svgEl.appendChild(borderEl);
+      } catch (err) {
+        console.error('[home-travel-map]', err);
+      }
+    })();
+  }
+</script>
+
+<style>
+  .home-travel-desc {
+    color: var(--slate, #8892b0);
+    margin: -30px 0 40px;
+  }
+  .home-map-link {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .home-map-wrap {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    background: var(--bg, #0a192f);
+    border: 1px solid var(--slate-dark, rgba(136,146,176,0.2));
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  #home-travel-map {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
