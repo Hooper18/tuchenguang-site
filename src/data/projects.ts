@@ -15,7 +15,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: 'schedule',
-    overline: '特色项目 · 2026',
+    overline: '2026.4',
     title: '课程日历',
     titleHref: 'https://calendar.tuchenguang.com',
     domain: 'calendar.tuchenguang.com',
@@ -34,7 +34,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'ledger',
-    overline: '特色项目 · 2026',
+    overline: '2026.4',
     title: '口袋记账',
     titleHref: 'https://ledger.tuchenguang.com',
     domain: 'ledger.tuchenguang.com',
@@ -53,7 +53,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'billiards',
-    overline: '特色项目 · 2026',
+    overline: '2026.4',
     title: '台球计分',
     titleHref: 'https://billiards.tuchenguang.com',
     domain: 'billiards.tuchenguang.com',
@@ -68,6 +68,6 @@ export const projects: Project[] = [
       '/images/projects/billiards-3.jpg',
       '/images/projects/billiards-4.jpg',
     ],
-    reverse: true,
+    reverse: false,
   },
 ];
