@@ -14,6 +14,25 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: 'schedule',
+    overline: '特色项目 · 2026',
+    title: '课程日历',
+    titleHref: 'https://calendar.tuchenguang.com',
+    domain: 'calendar.tuchenguang.com',
+    url: 'https://calendar.tuchenguang.com',
+    github: '',
+    description:
+      '大学课表不应该锁在 Excel 里。这个工具可以导入课表文件，按周/月/日视图查看课程安排，支持考试和作业提醒。给自己做的，解决"下节课是什么"这个每天都要问的问题。',
+    tech: ['React', 'TypeScript', 'Vite', 'Supabase', 'Tailwind', 'Claude API', 'PWA'],
+    images: [
+      '/images/projects/schedule-1.jpg',
+      '/images/projects/schedule-2.jpg',
+      '/images/projects/schedule-3.jpg',
+      '/images/projects/schedule-4.jpg',
+    ],
+    reverse: false,
+  },
+  {
     slug: 'ledger',
     overline: '特色项目 · 2026',
     title: '口袋记账',
@@ -30,7 +49,7 @@ export const projects: Project[] = [
       '/images/projects/ledger-3.jpg',
       '/images/projects/ledger-4.jpg',
     ],
-    reverse: false,
+    reverse: true,
   },
   {
     slug: 'billiards',
