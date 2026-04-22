@@ -22,7 +22,7 @@ export const projects: Project[] = [
     url: 'https://calendar.tuchenguang.com',
     github: '',
     description:
-      '大学课表不应该锁在 Excel 里。这个工具可以导入课表文件，按周/月/日视图查看课程安排，支持考试和作业提醒。给自己做的，解决"下节课是什么"这个每天都要问的问题。',
+      '我们大学的 DDL 太多了，学校还没有一个统一的记录 DDL 的软件，我就自己做了一个自动的。',
     tech: ['React', 'TypeScript', 'Vite', 'Supabase', 'Tailwind', 'Claude API', 'PWA'],
     images: [
       '/images/projects/schedule-1.jpg',
