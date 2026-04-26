@@ -446,9 +446,34 @@ section { padding: 100px 0; max-width: 1000px; margin: 0 auto; }
   margin-bottom: 12px;
   text-transform: uppercase;
 }
-.now-item:not(.active) .now-status {
+.now-item:not(.active):not(.done) .now-status {
   color: var(--slate);
   border-color: var(--slate-dark);
+}
+.now-item.done::before {
+  border-color: rgba(100, 255, 218, 0.4);
+}
+.now-item.done::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 10px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(100, 255, 218, 0.5);
+}
+.now-item.done .now-status {
+  color: rgba(100, 255, 218, 0.65);
+  border-color: rgba(100, 255, 218, 0.35);
+}
+.now-updated {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--slate);
+  letter-spacing: 0.05em;
+  margin-top: -30px;
+  margin-bottom: 35px;
 }
 .now-title {
   font-size: 20px;
