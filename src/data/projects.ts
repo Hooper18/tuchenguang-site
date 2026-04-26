@@ -60,7 +60,7 @@ export const projects: Project[] = [
     url: 'https://billiards.tuchenguang.com',
     github: '',
     description:
-      '和同学打追分局时发现：现有的台球计分 App 要么逻辑反人类，要么塞满广告。于是写了一个只做一件事的工具——干净、清楚、不打扰比赛节奏。',
+      '和同学打台球追分，发现现有的台球计分 App 要么逻辑反人类，要么塞满广告。于是写了一个。',
     tech: ['React', 'TypeScript', 'Tailwind', 'Vercel'],
     images: [
       '/images/projects/billiards-1.jpg',
