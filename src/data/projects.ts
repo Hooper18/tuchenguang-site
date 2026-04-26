@@ -41,7 +41,7 @@ export const projects: Project[] = [
     url: 'https://ledger.tuchenguang.com',
     github: 'https://github.com/Hooper18/ledger',
     description:
-      '出国留学后，我常常不知不觉就花了很多钱——记账本来是解决方案，但市面上的 App 很少有多币种切换、汇率记录这些留学生刚需功能，而且一般还要会员。于是我自己做了一个自用的，功能包括：多币种、汇率快照、日历视图、预算管理，全部免费。先自用，也希望能帮到少数同路人。',
+      '出国留学后，我常不知不觉花了很多钱，同时因为多平台用不同软件支付，每个月都不知道自己到底花出去了多少钱。下了几个记账 App 发现好功能都要会员，于是我自己做了一个自用的，功能包括：多币种记账、各种统计、预算管理，全部免费。小范围的运营成本我应该还负担得起。',
     tech: ['React', 'TypeScript', 'Vite', 'Supabase', 'Tailwind', 'Chart.js', 'PWA'],
     images: [
       '/images/projects/ledger-1.jpg',
