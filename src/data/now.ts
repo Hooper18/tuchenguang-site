@@ -3,6 +3,7 @@ export interface NowItem {
   label: string;
   title: string;
   description: string;
+  url?: string;
 }
 
 export const nowItems: NowItem[] = [
@@ -11,6 +12,14 @@ export const nowItems: NowItem[] = [
     label: '✓ 已完成',
     title: '台球计分',
     description: '',
+  },
+  {
+    status: 'done',
+    label: '✓ 已完成',
+    title: '量化交易软件（半成品）',
+    description:
+      'BTC/ETH/SOL 量化回测系统，符号主义规则引擎。因 100U 本金不值得接实盘，项目归档。',
+    url: 'https://quant.tuchenguang.com',
   },
   {
     status: 'active',
@@ -24,12 +33,5 @@ export const nowItems: NowItem[] = [
     label: '● 进行中',
     title: '完善 DDL 管理工具',
     description: '目前处于内测阶段，在不远的将来会完全公开。',
-  },
-  {
-    status: 'inactive',
-    label: '○ 构思中',
-    title: '量化交易软件',
-    description:
-      '加密货币目前币安现成的工具只有网格交易，第三方的量化本质黑箱。目前还没想好怎么做一个灵活的、用户可自定义策略的、接入币安的量化软件。',
   },
 ];

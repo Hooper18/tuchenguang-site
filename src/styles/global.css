@@ -491,6 +491,22 @@ section { padding: 100px 0; max-width: 1000px; margin: 0 auto; }
   color: var(--slate-light);
   font-weight: 500;
 }
+.now-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(100, 255, 218, 0.3);
+  transition: border-color 0.2s;
+}
+.now-link:hover {
+  border-bottom-color: var(--accent);
+}
+.now-link::after {
+  content: ' ↗';
+}
 
 /* Travel */
 #travel .placeholder {
