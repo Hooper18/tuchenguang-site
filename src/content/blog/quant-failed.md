@@ -1,6 +1,6 @@
 ---
 title: "量化软件失败了"
-description: "一天 vibecoding 量化交易软件的复盘。"
+description: "开发量化交易软件的复盘。"
 pubDate: 2026-04-28
 tags: []
 ---
