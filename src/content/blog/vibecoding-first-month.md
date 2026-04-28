@@ -2,7 +2,7 @@
 title: "Vibecoding 一个月"
 description: "一个 EEE 大一学生捣鼓出三个 web app 的复盘。"
 pubDate: 2026-04-17
-tags: ["vibecoding", "复盘", "Claude Code"]
+tags: []
 ---
 
 小学的信息课上，老师让我们在浏览器地址栏里输网址。我当时就好奇：这些网站是谁做的？在哪里？能不能在互联网上搜到我自己？
