@@ -5,6 +5,7 @@ interface Props {
 }
 
 const { images, id } = Astro.props;
+const hasMultiple = images.length > 1;
 ---
 
 <div class="carousel" data-carousel-id={id}>
@@ -17,13 +18,17 @@ const { images, id } = Astro.props;
       ))}
     </div>
   </div>
-  <button class="arrow prev" aria-label="上一张">&#8249;</button>
-  <button class="arrow next" aria-label="下一张">&#8250;</button>
-  <div class="dots">
-    {images.map((_, i) => (
-      <button class={`dot${i === 0 ? ' active' : ''}`} data-idx={i}></button>
-    ))}
-  </div>
+  {hasMultiple && (
+    <>
+      <button class="arrow prev" aria-label="上一张">&#8249;</button>
+      <button class="arrow next" aria-label="下一张">&#8250;</button>
+      <div class="dots">
+        {images.map((_, i) => (
+          <button class={`dot${i === 0 ? ' active' : ''}`} data-idx={i}></button>
+        ))}
+      </div>
+    </>
+  )}
 </div>
 
 <script>
