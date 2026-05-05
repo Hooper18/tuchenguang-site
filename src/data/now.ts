@@ -10,6 +10,12 @@ export const nowItems: NowItem[] = [
   {
     status: 'done',
     label: '✓ 已完成',
+    title: '吉他调音器',
+    description: '',
+  },
+  {
+    status: 'done',
+    label: '✓ 已完成',
     title: '台球计分',
     description: '',
   },
