@@ -78,8 +78,7 @@ export const projects: Project[] = [
     domain: 'tuner.tuchenguang.com',
     url: 'https://tuner.tuchenguang.com',
     github: '',
-    description:
-      '我自己学吉他时发现市面上的调音器 App 不是塞广告就是要订阅。于是写了一个纯前端、本地运行的：基于 Web Audio API 的 YIN 算法做音高检测，麦克风音频不上传，离线可用，支持标准调弦、Drop D 等多种 tuning。',
+    description: '一个本地运行纯净无广的吉他调音 App。',
     tech: ['React', 'TypeScript', 'Vite', 'Web Audio API', 'YIN', 'PWA', 'i18n'],
     images: [
       '/images/projects/tuner-1.jpg',
