@@ -57,9 +57,9 @@ src/
 │   ├── Hero.astro          # 第一屏：姓名 + tagline + CTA
 │   ├── About.astro         # 关于我：文字 + 技能 + 头像
 │   ├── Projects.astro      # 作品展示（循环 src/data/projects.ts）
-│   ├── PhoneCarousel.astro # 手机框 + 4 张截图轮播（可复用）
+│   ├── PhoneCarousel.astro # 手机框 + 截图轮播（自适应：单图不显示箭头/dots）
 │   ├── Now.astro           # "正在做"时间线
-│   ├── Travel.astro        # 足迹（目前是 Coming Soon 占位）
+│   ├── Travel.astro        # 足迹：d3-geo + topojson 渲染世界地图，标记访问过的国家
 │   ├── Contact.astro       # 联系方式
 │   └── Footer.astro        # 页脚
 ├── content/blog/           # 博客 Markdown 文章
@@ -124,15 +124,10 @@ draft: false
 ## 待办事项（Backlog）
 
 ### 短期
-- [ ] 验证 `public/images/projects/` 下所有图片无隐私问题（ledger-4.jpg QQ 账号已覆盖，确认效果）
-- [ ] 配置 hi@tuchenguang.com 邮件接收/转发（Resend 或 Cloudflare Email Routing）
-- [ ] 写第一篇真正的博客文章（替换 `welcome.md` 占位）
-- [ ] 换真人头像（目前 About.astro 是"涂"字占位）
+- [ ] 配置 `hi@tuchenguang.com` 邮件接收/转发（Resend 或 Cloudflare Email Routing）
+- [ ] 验证 `public/images/projects/ledger-4.jpg` 隐私覆盖效果（QQ 账号已覆盖，肉眼复核）
 
 ### 中期
-- [ ] 世界地图组件（Travel section 目前是 Coming Soon）
-  - 技术选型建议：react-simple-maps 或 Leaflet
-  - 数据：`src/data/travel.ts` 或 Supabase
 - [ ] 博客标签分类筛选
 - [ ] RSS feed 完善（现有基本骨架）
 - [ ] Vercel Analytics / Speed Insights 开启
@@ -141,6 +136,11 @@ draft: false
 - [ ] 英文版（独立 `/en/` 路径，不是实时切换）
 - [ ] OG 图动态生成（目前是静态占位）
 - [ ] 暗色 / 浅色主题切换（但可能不做——坚持暗色作品集风格）
+
+### 已完成（保留以便回溯）
+- [x] 真人头像已换上（`public/images/avatar.jpg`）
+- [x] 替换 `welcome.md` 占位（现有 `quant-failed.md` / `vibecoding-first-month.md`）
+- [x] 世界地图组件实装：`Travel.astro` 用 d3-geo + topojson 渲染，数据 `src/data/visited-countries.json` + `public/data/world-110m.json`
 
 ---
 
