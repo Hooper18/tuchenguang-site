@@ -1,5 +1,5 @@
 ---
-import { statSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
@@ -7,41 +7,46 @@ import SideLeft from '../components/SideLeft.astro';
 import SideRight from '../components/SideRight.astro';
 import Footer from '../components/Footer.astro';
 
-// 构建时从 cwd 读 APK 大小，cwd 在 astro build 时就是项目根目录。
-const downloadsDir = resolve(process.cwd(), 'public/downloads');
+// 从构建生成的 apps-manifest.json 读取每个 APK 的版本/大小/下载链接。
+// 这份 JSON 由 scripts/build-apps-manifest.mjs 在每次出新 APK 后再生。
+interface ManifestEntry {
+  versionCode: number;
+  versionName: string;
+  sizeBytes: number;
+  downloadUrl: string;
+  filename: string;
+}
+const manifestPath = resolve(process.cwd(), 'public/apps-manifest.json');
+const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8')) as Record<string, ManifestEntry>;
 
-function sizeOf(file: string) {
-  const bytes = statSync(resolve(downloadsDir, file)).size;
+function formatSize(bytes: number) {
   return (bytes / 1024 / 1024).toFixed(1) + ' MB';
 }
 
-interface AppEntry {
+interface AppMeta {
   slug: string;
   name: string;
   iconAlt: string;
   desc: string;
   badge: string;
-  apk: string;
   webUrl?: string;
 }
 
-const apps: AppEntry[] = [
+const APPS: AppMeta[] = [
   {
     slug: 'schedule',
     name: '课程日历',
     iconAlt: '课程日历应用图标',
-    desc: '学校 DDL 与课程管理。多平台支付时代的课业总账，支持月/周/列表视图，离线优先。',
+    desc: '学校 DDL 与课程管理。多平台支付时代的课业总账，支持月/周/列表视图，离线优先；带本地通知提醒。',
     badge: '在线同步',
-    apk: 'schedule-v0.1.0.apk',
     webUrl: 'https://calendar.tuchenguang.com',
   },
   {
     slug: 'ledger',
     name: '口袋记账',
     iconAlt: '口袋记账应用图标',
-    desc: '多币种记账与预算管理。统计、日历、汇率换算全部免费，不用开会员。',
+    desc: '多币种记账与预算管理。统计、日历、汇率换算全部免费，可设每日提醒。',
     badge: '在线同步',
-    apk: 'ledger-v0.1.0.apk',
     webUrl: 'https://ledger.tuchenguang.com',
   },
   {
@@ -50,7 +55,6 @@ const apps: AppEntry[] = [
     iconAlt: '追分记应用图标',
     desc: '三人台球计分。逻辑简洁、零广告，朋友局碎片化记账用。',
     badge: '完全离线',
-    apk: 'billiards-v0.1.0.apk',
     webUrl: 'https://billiards.tuchenguang.com',
   },
   {
@@ -59,13 +63,22 @@ const apps: AppEntry[] = [
     iconAlt: '吉他调音器应用图标',
     desc: '半音吉他调音器，YIN 算法做基频检测，本地运行不需要联网。',
     badge: '完全离线',
-    apk: 'tuner-v0.1.0.apk',
     webUrl: 'https://tuner.tuchenguang.com',
   },
 ];
+
+const apps = APPS.map((a) => {
+  const m = manifest[a.slug];
+  if (!m) throw new Error(`Missing apps-manifest entry for slug=${a.slug}`);
+  return { ...a, manifest: m };
+});
 ---
 
-<BaseLayout title="应用下载 — 涂晨光" description="我自己做的几个 Android 应用，扫一扫装在手机上用。">
+<BaseLayout
+  title="应用下载 — 涂晨光"
+  description="4 个我自己做的 Android 应用：课程日历、口袋记账、追分记、Tuner。安装包直接装手机用。"
+  ogImage="/og-apps.png"
+>
   <Nav />
   <SideLeft />
   <SideRight />
@@ -80,7 +93,7 @@ const apps: AppEntry[] = [
 
       <ul class="app-list">
         {apps.map((app) => (
-          <li class="app-row">
+          <li class="app-row" id={app.slug}>
             <img src={`/icons/${app.slug}.png`} alt={app.iconAlt} class="app-icon" loading="lazy" />
             <div class="app-meta">
               <div class="app-headline">
@@ -91,9 +104,9 @@ const apps: AppEntry[] = [
               </div>
               <p class="app-desc">{app.desc}</p>
               <div class="app-info">
-                <span>v0.1.0</span>
+                <span>v{app.manifest.versionName}</span>
                 <span class="dot">·</span>
-                <span>{sizeOf(app.apk)}</span>
+                <span>{formatSize(app.manifest.sizeBytes)}</span>
                 {app.webUrl && (
                   <>
                     <span class="dot">·</span>
@@ -102,7 +115,7 @@ const apps: AppEntry[] = [
                 )}
               </div>
             </div>
-            <a href={`/downloads/${app.apk}`} download class="dl-btn">下载 APK</a>
+            <a href={app.manifest.downloadUrl} download class="dl-btn">下载 APK</a>
           </li>
         ))}
       </ul>

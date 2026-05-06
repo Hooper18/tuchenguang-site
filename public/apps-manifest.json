@@ -1,0 +1,30 @@
+{
+  "billiards": {
+    "versionCode": 29634690,
+    "versionName": "0.2.0",
+    "sizeBytes": 3129427,
+    "downloadUrl": "https://tuchenguang.com/downloads/billiards-v0.2.0.apk",
+    "filename": "billiards-v0.2.0.apk"
+  },
+  "ledger": {
+    "versionCode": 29634690,
+    "versionName": "0.2.0",
+    "sizeBytes": 3275086,
+    "downloadUrl": "https://tuchenguang.com/downloads/ledger-v0.2.0.apk",
+    "filename": "ledger-v0.2.0.apk"
+  },
+  "schedule": {
+    "versionCode": 29634690,
+    "versionName": "0.2.0",
+    "sizeBytes": 3869738,
+    "downloadUrl": "https://tuchenguang.com/downloads/schedule-v0.2.0.apk",
+    "filename": "schedule-v0.2.0.apk"
+  },
+  "tuner": {
+    "versionCode": 29634690,
+    "versionName": "0.2.0",
+    "sizeBytes": 2970171,
+    "downloadUrl": "https://tuchenguang.com/downloads/tuner-v0.2.0.apk",
+    "filename": "tuner-v0.2.0.apk"
+  }
+}

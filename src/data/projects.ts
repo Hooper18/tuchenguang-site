@@ -10,6 +10,8 @@ export interface Project {
   tech: string[];
   images: string[];
   reverse: boolean;
+  /** /apps 页对应 slug；有值代表这个项目已经打成 APK，可在主页加'下载'入口。 */
+  apkSlug?: string;
 }
 
 export const projects: Project[] = [
@@ -31,6 +33,7 @@ export const projects: Project[] = [
       '/images/projects/ledger-4.jpg',
     ],
     reverse: false,
+    apkSlug: 'ledger',
   },
   {
     slug: 'billiards',
@@ -50,6 +53,7 @@ export const projects: Project[] = [
       '/images/projects/billiards-4.jpg',
     ],
     reverse: true,
+    apkSlug: 'billiards',
   },
   {
     slug: 'schedule',
@@ -69,6 +73,7 @@ export const projects: Project[] = [
       '/images/projects/schedule-4.jpg',
     ],
     reverse: false,
+    apkSlug: 'schedule',
   },
   {
     slug: 'tuner',
@@ -84,5 +89,6 @@ export const projects: Project[] = [
       '/images/projects/tuner-1.jpg',
     ],
     reverse: true,
+    apkSlug: 'tuner',
   },
 ];

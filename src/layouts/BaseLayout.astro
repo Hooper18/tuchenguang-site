@@ -4,11 +4,13 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  ogImage?: string;
 }
 
 const {
   title = '涂晨光 Tu Chenguang',
   description = '我是一名在马来西亚就读的电子与电气工程大一学生，来自浙江杭州。这里记录我的成长，以及一些顺手做出来的小东西。',
+  ogImage = '/images/og-image.png',
 } = Astro.props;
 ---
 
@@ -22,7 +24,9 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/images/og-image.png" />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title="涂晨光的博客" href="/rss.xml" />
     <meta name="generator" content={Astro.generator} />
