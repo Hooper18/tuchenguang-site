@@ -144,6 +144,18 @@ draft: false
 
 ---
 
+## 已知依赖告警（不紧迫）
+
+- `path-to-regexp` 链 ReDoS（GHSA-9wv6-86v2-598j，3 high）来自
+  `@astrojs/vercel → @vercel/routing-utils → path-to-regexp@6.x`。
+  上游 `@vercel/routing-utils` 还未升级。
+- **本站影响接近零**：`output: 'static'`，所有路由在 build 时静态
+  生成，部署后不走运行时路径匹配，ReDoS 不可触发。
+- 修复路径：等上游升级，或在 package.json 加 `overrides` 锁
+  `path-to-regexp@^8.0.0`（需先验证 `@vercel/routing-utils` API 兼容）。
+- `fast-xml-parser` XML 注入（GHSA-gh4j-gqv2-49f6）已通过升级
+  `@astrojs/vercel` 到 10.0.6 间接修复。
+
 ## 禁区（绝不要做）
 
 - 不要用 Tailwind / SCSS / styled-components 替换原生 CSS
