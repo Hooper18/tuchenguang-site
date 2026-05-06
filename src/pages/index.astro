@@ -6,6 +6,7 @@ import SideRight from '../components/SideRight.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
 import Projects from '../components/Projects.astro';
+import Apps from '../components/Apps.astro';
 import Now from '../components/Now.astro';
 import Travel from '../components/Travel.astro';
 import Contact from '../components/Contact.astro';
@@ -20,9 +21,31 @@ import Footer from '../components/Footer.astro';
     <Hero />
     <About />
     <Projects />
+    <section id="apps">
+      <h2 class="section-heading reveal"><span class="num">03.</span>下载</h2>
+      <p class="apps-intro reveal">
+        <strong>在线同步</strong>的 web 改完自动升级；<strong>完全离线</strong>的没网也能开。
+      </p>
+      <div class="reveal">
+        <Apps />
+      </div>
+    </section>
     <Now />
     <Travel />
     <Contact />
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  .apps-intro {
+    color: var(--slate);
+    font-size: 16px;
+    line-height: 1.75;
+    margin-bottom: 32px;
+  }
+  .apps-intro strong {
+    color: var(--slate-light);
+    font-weight: 500;
+  }
+</style>
