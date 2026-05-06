@@ -37,7 +37,7 @@ const APPS: AppMeta[] = [
     slug: 'schedule',
     name: '课程日历',
     iconAlt: '课程日历应用图标',
-    desc: '学校 DDL 与课程管理。多平台支付时代的课业总账，支持月/周/列表视图，离线优先；带本地通知提醒。',
+    desc: '学校 DDL 与课程自动记录。',
     badge: '在线同步',
     webUrl: 'https://calendar.tuchenguang.com',
   },
@@ -45,7 +45,7 @@ const APPS: AppMeta[] = [
     slug: 'ledger',
     name: '口袋记账',
     iconAlt: '口袋记账应用图标',
-    desc: '多币种记账与预算管理。统计、日历、汇率换算全部免费，可设每日提醒。',
+    desc: '多币种记账，统计、预算全免费。',
     badge: '在线同步',
     webUrl: 'https://ledger.tuchenguang.com',
   },
@@ -53,7 +53,7 @@ const APPS: AppMeta[] = [
     slug: 'billiards',
     name: '追分记',
     iconAlt: '追分记应用图标',
-    desc: '三人台球计分。逻辑简洁、零广告，朋友局碎片化记账用。',
+    desc: '三人台球计分。',
     badge: '完全离线',
     webUrl: 'https://billiards.tuchenguang.com',
   },
@@ -61,7 +61,7 @@ const APPS: AppMeta[] = [
     slug: 'tuner',
     name: 'Tuner',
     iconAlt: '吉他调音器应用图标',
-    desc: '半音吉他调音器，YIN 算法做基频检测，本地运行不需要联网。',
+    desc: '本地运行的吉他调音器。',
     badge: '完全离线',
     webUrl: 'https://tuner.tuchenguang.com',
   },
@@ -86,9 +86,7 @@ const apps = APPS.map((a) => {
     <section id="apps">
       <h1 class="page-heading"><span class="num">03.</span>应用下载</h1>
       <p class="page-intro">
-        几个我自己做的 Android 应用打包成 APK 直接装手机用。
-        <strong>在线同步</strong>的几个用 Capacitor 套了远程 PWA，web 改完手机自动用上新版本；
-        <strong>完全离线</strong>的把资源整个塞进 APK，没网也能开。
+        <strong>在线同步</strong>的 web 改完自动升级；<strong>完全离线</strong>的没网也能开。
       </p>
 
       <ul class="app-list">
@@ -120,14 +118,9 @@ const apps = APPS.map((a) => {
         ))}
       </ul>
 
-      <div class="install-hint">
-        <h3>安装提示</h3>
-        <ol>
-          <li>用手机浏览器打开本页直接点「下载 APK」。</li>
-          <li>下完 Android 弹「未知来源」拦截，到「设置 → 应用与权限 → 信任此来源」勾上即可。</li>
-          <li>第一次安装如果不显示图标，去「桌面 → 应用列表」找一下加到桌面。</li>
-        </ol>
-      </div>
+      <p class="install-hint">
+        手机浏览器打开本页点「下载 APK」。Android 拦未知来源时去「设置 → 应用与权限」放行。
+      </p>
     </section>
   </main>
   <Footer />
@@ -275,25 +268,13 @@ const apps = APPS.map((a) => {
   .dl-btn:hover { background: var(--accent-dim); }
 
   .install-hint {
-    border: 1px solid var(--slate-dark);
-    border-radius: 6px;
-    padding: 24px 28px;
-  }
-  .install-hint h3 {
-    font-family: var(--font-mono);
-    color: var(--accent);
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 14px;
-    letter-spacing: 0.04em;
-  }
-  .install-hint ol {
-    padding-left: 20px;
     color: var(--slate);
-    font-size: 14px;
-    line-height: 1.85;
+    font-size: 13px;
+    line-height: 1.75;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 560px;
   }
-  .install-hint li { margin-bottom: 4px; }
 
   @media (max-width: 699px) {
     main { padding-top: 100px; }
