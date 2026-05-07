@@ -125,7 +125,6 @@ draft: false
 
 ### 短期
 - [ ] 配置 `hi@tuchenguang.com` 邮件接收/转发（Resend 或 Cloudflare Email Routing）
-- [ ] 验证 `public/images/projects/ledger-4.jpg` 隐私覆盖效果（QQ 账号已覆盖，肉眼复核）
 
 ### 中期
 - [ ] 博客标签分类筛选
@@ -141,6 +140,7 @@ draft: false
 - [x] 真人头像已换上（`public/images/avatar.jpg`）
 - [x] 替换 `welcome.md` 占位（现有 `quant-failed.md` / `vibecoding-first-month.md`）
 - [x] 世界地图组件实装：`Travel.astro` 用 d3-geo + topojson 渲染，数据 `src/data/visited-countries.json` + `public/data/world-110m.json`
+- [x] `ledger-4.jpg` 隐私覆盖肉眼复核通过（用户名/邮箱区域被灰色块完整覆盖）
 
 ---
 
