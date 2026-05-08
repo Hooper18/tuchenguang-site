@@ -1,12 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
-import BlogPostPage from '../../components/BlogPostPage.astro';
-import { splitBlogId } from '../../data/blog';
+import BlogPostPage from '../../../components/BlogPostPage.astro';
+import { splitBlogId } from '../../../data/blog';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   return posts
-    .filter((post) => splitBlogId(post.id).lang === 'zh')
+    .filter((post) => splitBlogId(post.id).lang === 'en')
     .map((post) => ({
       params: { slug: splitBlogId(post.id).slug },
       props: { post },
@@ -16,4 +16,4 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 ---
 
-<BlogPostPage post={post} lang="zh" />
+<BlogPostPage post={post} lang="en" />
