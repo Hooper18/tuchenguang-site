@@ -144,6 +144,7 @@ draft: false
 - [x] 英文版（独立 `/en/` 路径）2026-05-08 上线：`src/i18n/{zh,en,index}.ts` 字典 + Nav 切换链接 + `HomePage`/`AppsPage`/`TravelPage` 共享 page body；`projects.ts`/`now.ts` 数据双语字段，`travel-i18n.ts` 维护 country/region/city/note 映射
 - [x] 博客双语化 2026-05-08 上线：markdown 改 `slug/{zh,en}.md` 目录结构（id 形如 `quant-failed/zh`），`src/data/blog.ts` 提供 splitBlogId 等工具；`BlogListPage`/`BlogPostPage` 共享组件，`/blog` 和 `/en/blog` 各自一行入口；BlogPostPage 检查对端语言版本是否存在，缺翻译时 lang switch 兜底跳列表页；RSS 双源 `/rss.xml` `/en/rss.xml`，BaseLayout alternate link 跟随 lang
 - [x] 技术债清理 2026-05-08：lastUpdated 文案与日期解耦（`now.ts` 导 Date，formatDate 上提到 `i18n/index.ts`）；`Bilingual`/`pickText` 抽到 `data/_shared.ts`；直辖市 region===city 不再渲染两次；移动端 nav 隐藏改 class-based；`public/robots.txt` + `public/sitemap-index.xml`（astro-sitemap 配 i18n 自动出 hreflang）；BaseLayout 加 hreflang/canonical/x-default 三件套，BlogPostPage 用 hasAltLang 抑制孤儿篇的虚假翻译标记；双语 404 页（pathname 探测 + noIndex）；`path-to-regexp` 经 npm overrides 锁 ^8，3 high → 0
+- [x] 第二轮打磨 2026-05-08：Vitest 18 项测试覆盖 `splitBlogId`/`switchLangHref`/`blogPostHref`/`blogIndexHref`/`formatDate`/`htmlLangAttr`（`npm test`）；Astro 6.1.7 → 6.3.1 minor 升级；`en` tooltipMonth 用 Intl.DateTimeFormat 替硬编码月名；global.css 加 `:focus-visible` 焦点环（键盘 a11y）；TravelPage 拆 `@ts-ignore` —— `select<SVGSVGElement, unknown>(...)` 显式泛型替代
 
 ---
 
