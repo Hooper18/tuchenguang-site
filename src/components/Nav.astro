@@ -3,14 +3,17 @@ import { getDict, switchLangHref, type Lang } from '../i18n';
 
 interface Props {
   lang?: Lang;
+  /** Override default language switch href — used by blog post pages
+   *  when the other-language version doesn't exist. */
+  langSwitchHref?: string;
 }
 
-const { lang = 'zh' } = Astro.props;
+const { lang = 'zh', langSwitchHref } = Astro.props;
 const t = getDict(lang);
 
 const homeHref = lang === 'zh' ? '/' : '/en/';
 const blogHref = lang === 'zh' ? '/blog' : '/en/blog';
-const altLangHref = switchLangHref(Astro.url.pathname, lang);
+const altLangHref = langSwitchHref ?? switchLangHref(Astro.url.pathname, lang);
 ---
 
 <nav id="nav">
@@ -25,9 +28,7 @@ const altLangHref = switchLangHref(Astro.url.pathname, lang);
     <li class="lang-switch">
       <a href={altLangHref} aria-label={t.nav.langSwitchAria}>{t.nav.langSwitch}</a>
     </li>
-    {lang === 'zh' && (
-      <li><a href={blogHref} class="resume-btn">{t.nav.blog}</a></li>
-    )}
+    <li><a href={blogHref} class="resume-btn">{t.nav.blog}</a></li>
   </ul>
 </nav>
 

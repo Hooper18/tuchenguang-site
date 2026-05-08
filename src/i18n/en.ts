@@ -129,7 +129,15 @@ export const en: DeepStringify<Dict> = {
   baseMeta: {
     title: 'Tu Chenguang',
     description: "I'm a first-year EEE student in Malaysia, originally from Hangzhou. This site tracks how I grow, plus a few small things I built on my own.",
-    rssTitle: "Tu Chenguang's blog",
   },
 
+  blog: {
+    listTitle: 'Blog',
+    metaTitle: 'Blog — Tu Chenguang',
+    metaDesc: "Notes on the projects I'm building, life as an international student, and whatever I'm learning along the way.",
+    backToBlog: '← Back to blog',
+    updatedOn: 'Updated',
+    rssTitle: "Tu Chenguang's blog",
+    rssDesc: "Notes on the projects I'm building, life as an international student, and whatever I'm learning along the way.",
+  },
 };

@@ -20,8 +20,6 @@ export function switchLangHref(currentPath: string, currentLang: Lang): string {
   if (currentLang === 'zh') {
     // /xxx → /en/xxx,  / → /en/
     if (currentPath === '/' || currentPath === '') return '/en/';
-    // 博客英文版未上线 —— /blog/* 切换到英文首页，避免 404
-    if (currentPath === '/blog' || currentPath.startsWith('/blog/')) return '/en/';
     return '/en' + (currentPath.startsWith('/') ? currentPath : '/' + currentPath);
   }
   // currentLang === 'en' — strip the /en prefix

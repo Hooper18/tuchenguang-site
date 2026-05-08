@@ -120,9 +120,17 @@ export const zh = {
   baseMeta: {
     title: '涂晨光 Tu Chenguang',
     description: '我是一名在马来西亚就读的电子与电气工程大一学生，来自浙江杭州。这里记录我的成长，以及一些顺手做出来的小东西。',
-    rssTitle: '涂晨光的博客',
   },
 
+  blog: {
+    listTitle: '博客',
+    metaTitle: '博客 — 涂晨光',
+    metaDesc: '涂晨光的博客，记录项目开发、留学生活和学到的新东西。',
+    backToBlog: '← 返回博客',
+    updatedOn: '更新于',
+    rssTitle: '涂晨光的博客',
+    rssDesc: '记录项目开发、留学生活和学到的新东西。',
+  },
 } as const;
 
 export type Dict = typeof zh;

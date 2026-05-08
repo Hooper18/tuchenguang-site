@@ -37,9 +37,12 @@ const htmlLang = htmlLangAttr(lang);
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    {lang === 'zh' && (
-      <link rel="alternate" type="application/rss+xml" title={t.baseMeta.rssTitle} href="/rss.xml" />
-    )}
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={t.blog.rssTitle}
+      href={lang === 'zh' ? '/rss.xml' : '/en/rss.xml'}
+    />
     <meta name="generator" content={Astro.generator} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
