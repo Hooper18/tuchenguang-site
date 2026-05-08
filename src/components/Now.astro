@@ -1,5 +1,13 @@
 ---
-import { nowItems } from '../data/now';
+import { nowItems, pickText } from '../data/now';
+import { getDict, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'zh' } = Astro.props;
+const t = getDict(lang);
 
 const statusClass = (status: string) => {
   if (status === 'active') return ' active';
@@ -9,14 +17,14 @@ const statusClass = (status: string) => {
 ---
 
 <section id="now">
-  <h2 class="section-heading reveal"><span class="num">04.</span>正在做</h2>
-  <p class="now-updated reveal">最后一次更新时间：2026 年 5 月 5 日</p>
+  <h2 class="section-heading reveal"><span class="num">04.</span>{t.now.sectionLabel}</h2>
+  <p class="now-updated reveal">{t.now.lastUpdated}</p>
   <div class="now-timeline reveal">
     {nowItems.map((item) => (
       <div class={`now-item${statusClass(item.status)}`}>
-        <span class="now-status">{item.label}</span>
-        <h3 class="now-title">{item.title}</h3>
-        {item.description && <p class="now-desc" set:html={item.description} />}
+        <span class="now-status">{pickText(item.label, lang)}</span>
+        <h3 class="now-title">{pickText(item.title, lang)}</h3>
+        {pickText(item.description, lang) && <p class="now-desc" set:html={pickText(item.description, lang)} />}
         {item.url && (
           <a class="now-link" href={item.url} target="_blank" rel="noopener noreferrer">
             {item.url.replace(/^https?:\/\//, '')}
