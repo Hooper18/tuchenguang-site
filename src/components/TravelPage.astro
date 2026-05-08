@@ -1,0 +1,504 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from './Nav.astro';
+import SideLeft from './SideLeft.astro';
+import SideRight from './SideRight.astro';
+import Footer from './Footer.astro';
+import travelData from '../data/travel.json';
+import { tCountry, tRegion, tCity, tNote } from '../data/travel-i18n';
+import { getDict, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getDict(lang);
+
+type Place = {
+  country: string;
+  region: string | null;
+  city: string;
+  lat: number;
+  lng: number;
+  date: string | null;
+  type: 'base' | 'travel';
+  note: string | null;
+};
+
+const allPlaces = travelData.places as Place[];
+const bases = allPlaces.filter(p => p.type === 'base');
+const travels = allPlaces
+  .filter(p => p.type === 'travel')
+  .sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
+
+const byYear: Record<string, Place[]> = {};
+for (const p of travels) {
+  if (!p.date) continue;
+  const year = p.date.slice(0, 4);
+  if (!byYear[year]) byYear[year] = [];
+  byYear[year].push(p);
+}
+const sortedYears = Object.keys(byYear).sort((a, b) => parseInt(b) - parseInt(a));
+
+// 时间线条目展示逻辑：
+//  · 中国大陆：region · city（如 浙江 · 杭州 / Zhejiang · Hangzhou）
+//  · 港澳：直接 city（香港 / Hong Kong）
+//  · 国外：country · city（日本 · 东京 / Japan · Tokyo）
+function displayLabel(p: Place): string {
+  if (p.country === '中国' && p.region) {
+    return `${tRegion(p.region, lang)} · ${tCity(p.city, lang)}`;
+  }
+  if (p.country === '中国香港') return tCity('香港', lang);
+  if (p.country === '中国澳门') return tCity('澳门', lang);
+  return `${tCountry(p.country, lang)} · ${tCity(p.city, lang)}`;
+}
+
+// 根据地条目格式：
+//  · 老家无日期：region · city · note
+//  · 在读有日期：country · city · note 2025-09 至今
+function baseLine(p: Place): string {
+  const cityT = tCity(p.city, lang);
+  const noteT = tNote(p.note, lang);
+  if (p.date === null) {
+    const regionT = tRegion(p.region, lang);
+    return `${regionT} · ${cityT} · ${noteT}`;
+  }
+  const countryT = tCountry(p.country, lang);
+  if (lang === 'zh') {
+    return `${countryT} · ${cityT} · ${noteT} ${p.date} ${t.pageTravel.untilNow}`;
+  }
+  return `${countryT} · ${cityT} · ${noteT} ${p.date}–${t.pageTravel.untilNow}`;
+}
+
+// SSR 预生成 tooltip 文本：JS 端只读 data-tooltip，不再做翻译。
+function tooltipText(p: Place): string {
+  const cityT = tCity(p.city, lang);
+  if (p.type === 'base' && p.note === '老家') {
+    return `${cityT} · ${tNote('老家', lang)}`;
+  }
+  if (p.type === 'base' && p.note === '在读' && p.date) {
+    if (lang === 'zh') return `${cityT} · ${tNote('在读', lang)} ${p.date} ${t.pageTravel.untilNow}`;
+    return `${cityT} · ${tNote('在读', lang)} since ${p.date}`;
+  }
+  if (p.type === 'travel' && p.date) {
+    const [y, m] = p.date.split('-');
+    return `${cityT} · ${t.pageTravel.tooltipMonth(y, m)}`;
+  }
+  return cityT;
+}
+
+// 用于 client script：为每个 place 附带预渲染好的 tooltip
+const placesForScript = allPlaces.map(p => ({ ...p, _tip: tooltipText(p) }));
+---
+
+<BaseLayout
+  lang={lang}
+  title={t.pageTravel.metaTitle}
+  description={t.pageTravel.metaDesc}
+>
+  <Nav lang={lang} />
+  <SideLeft />
+  <SideRight />
+  <main class="travel-main">
+    <div class="travel-header reveal">
+      <h1 class="travel-title"><span class="num">04.</span>{t.pageTravel.pageHeading}</h1>
+      <p class="travel-desc">{t.pageTravel.pageDesc}</p>
+    </div>
+
+    <div id="map-tooltip" class="map-tooltip" style="display:none"></div>
+    <div class="map-wrap reveal">
+      <svg id="travel-map" viewBox="0 0 1000 500" aria-label={t.travel.mapAriaFull}></svg>
+      <div id="map-loading" class="map-loading">{t.pageTravel.mapLoading}</div>
+    </div>
+
+    <div class="timeline-section">
+      <div class="year-group reveal">
+        <h2 class="year-label">{t.pageTravel.homeBase}</h2>
+        <ul class="place-list">
+          {bases.map(p => (
+            <li class="place-item base-item">
+              <span class="dot base-dot"></span>
+              <span class="place-label">{baseLine(p)}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {sortedYears.map(year => (
+        <div class="year-group reveal">
+          <h2 class="year-label">{year}</h2>
+          <ul class="place-list">
+            {byYear[year].map(p => (
+              <li class="place-item">
+                <span class="dot travel-dot"></span>
+                <span class="place-date">{p.date}</span>
+                <span class="place-sep"> · </span>
+                <span class="place-label">
+                  {displayLabel(p)}{p.note ? ` · ${tNote(p.note, lang)}` : ''}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<script is:inline define:vars={{ places: placesForScript, mapFailedText: t.pageTravel.mapFailed }}>
+  window.__travelPlaces = places;
+  window.__travelMapFailedText = mapFailedText;
+</script>
+
+<script>
+  import { geoNaturalEarth1, geoPath, geoArea } from 'd3-geo';
+  import { feature, mesh } from 'topojson-client';
+  import { zoom } from 'd3-zoom';
+  import { select } from 'd3-selection';
+
+  type Place = {
+    country: string; region: string | null; city: string;
+    lat: number; lng: number; date: string | null;
+    type: 'base' | 'travel'; note: string | null;
+    _tip: string;
+  };
+
+  const places: Place[] = (window as any).__travelPlaces ?? [];
+  const mapFailedText: string = (window as any).__travelMapFailedText ?? 'Failed to load map';
+
+  // Visited non-China-mainland country ISO codes
+  const countryToISO: Record<string, number> = {
+    '马来西亚': 458, '印度尼西亚': 360, '柬埔寨': 116,
+    '日本': 392, '韩国': 410, '新加坡': 702,
+  };
+  const visitedISOs = new Set<number>();
+  places.forEach(p => { if (countryToISO[p.country]) visitedISOs.add(countryToISO[p.country]); });
+
+  // Visited Chinese mainland provinces
+  const visitedRegions = new Set<string>();
+  places.filter(p => p.country === '中国' && p.region).forEach(p => visitedRegions.add(p.region!));
+
+  const hasHK = places.some(p => p.country === '中国香港');
+  const hasMacau = places.some(p => p.country === '中国澳门');
+
+  const svgEl = document.getElementById('travel-map') as SVGSVGElement | null;
+  const loadingEl = document.getElementById('map-loading');
+  if (!svgEl) throw new Error('travel-map not found');
+
+  const width = 1000;
+  const height = 500;
+  let currentZoomK = 1;
+
+  const projection = geoNaturalEarth1().fitSize([width, height], { type: 'Sphere' });
+  const pathGen = geoPath().projection(projection);
+
+  function makePath(d: string | null, fill: string, stroke: string, strokeW: number) {
+    if (!d) return null;
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    el.setAttribute('d', d);
+    el.setAttribute('fill', fill);
+    el.setAttribute('stroke', stroke);
+    el.setAttribute('stroke-width', String(strokeW));
+    return el;
+  }
+
+  try {
+    const [worldData, chinaData] = await Promise.all([
+      fetch('/data/world-110m.json').then(r => r.json()),
+      fetch('/data/china-provinces.json').then(r => r.json()),
+    ]);
+
+    const zoomGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    zoomGroup.setAttribute('id', 'zoom-group');
+    svgEl.appendChild(zoomGroup);
+
+    const sphereBg = makePath(pathGen({ type: 'Sphere' }), '#0a192f', 'none', 0);
+    if (sphereBg) {
+      sphereBg.dataset.originalStrokeWidth = sphereBg.getAttribute('stroke-width') || '0';
+      zoomGroup.appendChild(sphereBg);
+    }
+
+    const countries = feature(worldData as any, (worldData as any).objects.countries) as any;
+    for (const f of countries.features) {
+      const iso = parseInt(String(f.id));
+      const isChina = iso === 156;
+      let fill: string;
+      if (isChina) {
+        fill = 'rgba(255,255,255,0.01)';
+      } else if (visitedISOs.has(iso)) {
+        fill = 'rgba(100,255,218,0.10)';
+      } else {
+        fill = 'rgba(255,255,255,0.02)';
+      }
+      const el = makePath(pathGen(f), fill, 'rgba(255,255,255,0.08)', 0.4);
+      if (el) {
+        el.dataset.originalStrokeWidth = el.getAttribute('stroke-width') || '0';
+        zoomGroup.appendChild(el);
+      }
+    }
+
+    const borders = mesh(worldData as any, (worldData as any).objects.countries, (a: any, b: any) => a !== b);
+    const borderEl = makePath(pathGen(borders as any), 'none', 'rgba(255,255,255,0.10)', 0.4);
+    if (borderEl) {
+      borderEl.dataset.originalStrokeWidth = borderEl.getAttribute('stroke-width') || '0';
+      zoomGroup.appendChild(borderEl);
+    }
+
+    function rewindFeature(f: any): any {
+      const geom = f?.geometry;
+      if (!geom) return f;
+      const rev = (ring: number[][]) => ring.slice().reverse();
+      if (geom.type === 'Polygon') {
+        return { ...f, geometry: { ...geom, coordinates: geom.coordinates.map(rev) } };
+      }
+      if (geom.type === 'MultiPolygon') {
+        return { ...f, geometry: { ...geom, coordinates: geom.coordinates.map((poly: number[][][]) => poly.map(rev)) } };
+      }
+      return f;
+    }
+
+    for (const f of (chinaData as any).features) {
+      const name: string = f.properties?.name ?? '';
+      if (name.includes('台湾')) continue;
+
+      const isHKFeature = name.includes('香港');
+      const isMacauFeature = name.includes('澳门');
+      const isVisitedProvince = [...visitedRegions].some(r => name.includes(r));
+
+      let fill: string;
+      if (isHKFeature && hasHK) fill = 'rgba(100,255,218,0.10)';
+      else if (isMacauFeature && hasMacau) fill = 'rgba(100,255,218,0.10)';
+      else if (isVisitedProvince) fill = 'rgba(100,255,218,0.06)';
+      else fill = 'transparent';
+
+      const fixed = geoArea(f) > 2 * Math.PI ? rewindFeature(f) : f;
+      const el = makePath(pathGen(fixed), fill, 'rgba(255,255,255,0.06)', 0.3);
+      if (el) {
+        el.dataset.originalStrokeWidth = el.getAttribute('stroke-width') || '0';
+        zoomGroup.appendChild(el);
+      }
+    }
+
+    for (const p of places) {
+      const coords = projection([p.lng, p.lat]);
+      if (!coords) continue;
+      const [x, y] = coords;
+      if (x < 0 || x > width || y < 0 || y > height) continue;
+
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', String(x));
+      circle.setAttribute('cy', String(y));
+      const isBase = p.type === 'base';
+      circle.setAttribute('r', isBase ? '4' : '3');
+      circle.setAttribute('fill', isBase ? '#f59e0b' : '#64ffda');
+      circle.setAttribute('stroke', isBase ? 'rgba(100,50,0,0.6)' : 'rgba(0,60,50,0.6)');
+      circle.setAttribute('stroke-width', '0.8');
+      circle.dataset.tip = p._tip;
+      circle.dataset.type = p.type;
+      circle.style.cursor = 'pointer';
+
+      circle.addEventListener('mouseenter', (e) => {
+        const el = e.currentTarget as SVGCircleElement;
+        const tooltipEl = document.getElementById('map-tooltip');
+        if (!tooltipEl) return;
+        tooltipEl.textContent = el.dataset.tip ?? '';
+        tooltipEl.style.display = 'block';
+
+        const circleRect = el.getBoundingClientRect();
+        tooltipEl.style.left = `${circleRect.right + 8}px`;
+        tooltipEl.style.top = `${circleRect.top - 28}px`;
+
+        el.setAttribute('stroke', '#64ffda');
+        el.setAttribute('stroke-width', String(1 / currentZoomK));
+      });
+
+      circle.addEventListener('mouseleave', (e) => {
+        const el = e.currentTarget as SVGCircleElement;
+        const tooltipEl = document.getElementById('map-tooltip');
+        if (tooltipEl) tooltipEl.style.display = 'none';
+
+        const isBase = el.dataset.type === 'base';
+        el.setAttribute('stroke', isBase ? 'rgba(100,50,0,0.6)' : 'rgba(0,60,50,0.6)');
+        el.setAttribute('stroke-width', String(0.8 / currentZoomK));
+      });
+
+      zoomGroup.appendChild(circle);
+    }
+
+    const zoomBehavior = zoom<SVGSVGElement, unknown>()
+      .scaleExtent([1, 8])
+      .translateExtent([[0, 0], [width, height]])
+      .on('zoom', (event) => {
+        const { transform } = event;
+        zoomGroup.setAttribute('transform', transform.toString());
+        currentZoomK = transform.k;
+        const k = transform.k;
+
+        zoomGroup.querySelectorAll('circle').forEach((c) => {
+          const isBase = (c as SVGCircleElement).dataset.type === 'base';
+          const baseR = isBase ? 4 : 3;
+          c.setAttribute('r', String(baseR / k));
+          c.setAttribute('stroke-width', String(0.8 / k));
+        });
+
+        zoomGroup.querySelectorAll('path').forEach((p) => {
+          const original = (p as SVGPathElement).dataset.originalStrokeWidth;
+          if (original) {
+            p.setAttribute('stroke-width', String(Number(original) / k));
+          }
+        });
+
+        zoomGroup.querySelectorAll('rect').forEach((r) => {
+          const original = (r as SVGRectElement).dataset.originalStrokeWidth;
+          if (original) {
+            r.setAttribute('stroke-width', String(Number(original) / k));
+          }
+        });
+      });
+
+    // @ts-ignore d3-selection 类型和原生 SVGSVGElement 对接
+    select(svgEl).call(zoomBehavior as any);
+
+    if (loadingEl) loadingEl.remove();
+  } catch (err) {
+    if (loadingEl) loadingEl.textContent = mapFailedText;
+    console.error('Travel map error:', err);
+  }
+</script>
+
+<style>
+  .travel-main {
+    padding: 120px 100px 100px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .travel-header { margin-bottom: 40px; }
+
+  .travel-title {
+    font-size: clamp(26px, 5vw, 32px);
+    color: var(--slate-light);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .travel-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--slate-dark);
+    max-width: 400px;
+    margin-left: 20px;
+  }
+  .travel-title .num {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  .travel-desc {
+    font-size: 15px;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+
+  .map-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    margin-bottom: 60px;
+    background: var(--bg);
+    border: 1px solid var(--slate-dark);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  #travel-map {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .map-tooltip {
+    position: fixed;
+    background: #0a192f;
+    color: var(--slate-light, #ccd6f6);
+    border: 1px solid #64ffda;
+    padding: 6px 10px;
+    font-size: 13px;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    pointer-events: none;
+    z-index: 10;
+    white-space: nowrap;
+    line-height: 1.4;
+  }
+
+  .map-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--slate);
+    pointer-events: none;
+  }
+
+  .timeline-section {
+    max-width: 700px;
+  }
+  .year-group { margin-bottom: 40px; }
+  .year-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+  .place-list { list-style: none; }
+  .place-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(73, 86, 112, 0.2);
+  }
+  .place-item:last-child { border-bottom: none; }
+
+  .dot {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    position: relative;
+    top: 1px;
+  }
+  .base-dot { background: #f59e0b; }
+  .travel-dot { background: var(--accent); }
+
+  .place-date {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--slate-dark);
+    white-space: nowrap;
+  }
+  .place-sep { color: var(--slate-dark); }
+  .place-label { color: var(--slate); }
+  .base-item .place-label { color: var(--slate-light); }
+
+  @media (max-width: 1099px) {
+    .travel-main { padding: 120px 50px 100px; }
+  }
+  @media (max-width: 699px) {
+    .travel-main { padding: 100px 20px 80px; }
+  }
+</style>

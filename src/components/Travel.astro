@@ -1,13 +1,23 @@
 ---
+import { getDict, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'zh' } = Astro.props;
+const t = getDict(lang);
+
 const visitedCountries: string[] = (await import('../data/visited-countries.json')).default;
+const travelHref = lang === 'zh' ? '/travel' : '/en/travel';
 ---
 
 <section id="travel">
-  <h2 class="section-heading reveal"><span class="num">05.</span> 足迹</h2>
-  <p class="home-travel-desc reveal">走过的地方</p>
-  <a href="/travel" class="home-map-link" aria-label="查看完整足迹">
+  <h2 class="section-heading reveal"><span class="num">05.</span> {t.travel.sectionLabel}</h2>
+  <p class="home-travel-desc reveal">{t.travel.desc}</p>
+  <a href={travelHref} class="home-map-link" aria-label={t.travel.fullLinkAria}>
     <div class="home-map-wrap">
-      <svg id="home-travel-map" viewBox="0 0 1000 500" aria-label="首页世界足迹地图缩略"></svg>
+      <svg id="home-travel-map" viewBox="0 0 1000 500" aria-label={t.travel.mapAriaHome}></svg>
     </div>
   </a>
 </section>
