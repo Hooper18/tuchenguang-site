@@ -1,9 +1,5 @@
-import type { Lang } from '../i18n';
-
-interface Bilingual {
-  zh: string;
-  en: string;
-}
+import type { Bilingual } from './_shared';
+export { pickText } from './_shared';
 
 export interface Project {
   slug: string;
@@ -21,10 +17,6 @@ export interface Project {
   reverse: boolean;
   /** /apps 页对应 slug；有值代表这个项目已经打成 APK，可在主页加'下载'入口。 */
   apkSlug?: string;
-}
-
-export function pickText(field: Bilingual, lang: Lang): string {
-  return field[lang];
 }
 
 export const projects: Project[] = [
