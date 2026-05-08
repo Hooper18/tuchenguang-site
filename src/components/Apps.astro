@@ -2,6 +2,14 @@
 // 应用下载列表 — 主页 #apps 区段和 /apps 独立页共用。
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { getDict, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'zh' } = Astro.props;
+const t = getDict(lang);
 
 interface ManifestEntry {
   versionCode: number;
@@ -18,46 +26,51 @@ function formatSize(bytes: number) {
   return (bytes / 1024 / 1024).toFixed(1) + ' MB';
 }
 
+interface Bilingual { zh: string; en: string }
+
 interface AppMeta {
   slug: string;
-  name: string;
-  iconAlt: string;
-  desc: string;
-  badge: '在线同步' | '完全离线';
+  name: Bilingual;
+  iconAlt: Bilingual;
+  desc: Bilingual;
+  badge: 'sync' | 'offline';
   webUrl?: string;
 }
 
 const APPS: AppMeta[] = [
   {
     slug: 'schedule',
-    name: '课程日历',
-    iconAlt: '课程日历应用图标',
-    desc: '学校 DDL 与课程自动记录。',
-    badge: '在线同步',
+    name: { zh: '课程日历', en: 'Class Calendar' },
+    iconAlt: { zh: '课程日历应用图标', en: 'Class Calendar app icon' },
+    desc: { zh: '学校 DDL 与课程自动记录。', en: 'Catches coursework deadlines and class times for you.' },
+    badge: 'sync',
     webUrl: 'https://calendar.tuchenguang.com',
   },
   {
     slug: 'ledger',
-    name: '口袋记账',
-    iconAlt: '口袋记账应用图标',
-    desc: '多币种记账，统计、预算全免费。',
-    badge: '在线同步',
+    name: { zh: '口袋记账', en: 'Pocket Ledger' },
+    iconAlt: { zh: '口袋记账应用图标', en: 'Pocket Ledger app icon' },
+    desc: {
+      zh: '多币种记账，统计、预算全免费。',
+      en: 'Multi-currency entries with stats and budgets — all free.',
+    },
+    badge: 'sync',
     webUrl: 'https://ledger.tuchenguang.com',
   },
   {
     slug: 'billiards',
-    name: '追分记',
-    iconAlt: '追分记应用图标',
-    desc: '三人台球计分。',
-    badge: '完全离线',
+    name: { zh: '追分记', en: 'Billiards Scorer' },
+    iconAlt: { zh: '追分记应用图标', en: 'Billiards Scorer app icon' },
+    desc: { zh: '三人台球计分。', en: 'A scorekeeper for three-player billiards.' },
+    badge: 'offline',
     webUrl: 'https://billiards.tuchenguang.com',
   },
   {
     slug: 'tuner',
-    name: 'Tuner',
-    iconAlt: '吉他调音器应用图标',
-    desc: '本地运行的吉他调音器。',
-    badge: '完全离线',
+    name: { zh: 'Tuner', en: 'Tuner' },
+    iconAlt: { zh: '吉他调音器应用图标', en: 'Guitar tuner app icon' },
+    desc: { zh: '本地运行的吉他调音器。', en: 'A guitar tuner that runs entirely on-device.' },
+    badge: 'offline',
     webUrl: 'https://tuner.tuchenguang.com',
   },
 ];
@@ -72,15 +85,15 @@ const apps = APPS.map((a) => {
 <ul class="app-list">
   {apps.map((app) => (
     <li class="app-row" id={app.slug}>
-      <img src={`/icons/${app.slug}.png`} alt={app.iconAlt} class="app-icon" loading="lazy" />
+      <img src={`/icons/${app.slug}.png`} alt={app.iconAlt[lang]} class="app-icon" loading="lazy" />
       <div class="app-meta">
         <div class="app-headline">
-          <h3 class="app-name">{app.name}</h3>
-          <span class={`app-badge ${app.badge === '完全离线' ? 'badge-offline' : 'badge-sync'}`}>
-            {app.badge}
+          <h3 class="app-name">{app.name[lang]}</h3>
+          <span class={`app-badge ${app.badge === 'offline' ? 'badge-offline' : 'badge-sync'}`}>
+            {app.badge === 'offline' ? t.apps.badgeOffline : t.apps.badgeSync}
           </span>
         </div>
-        <p class="app-desc">{app.desc}</p>
+        <p class="app-desc">{app.desc[lang]}</p>
         <div class="app-info">
           <span>v{app.manifest.versionName}</span>
           <span class="dot">·</span>
@@ -88,12 +101,12 @@ const apps = APPS.map((a) => {
           {app.webUrl && (
             <>
               <span class="dot">·</span>
-              <a href={app.webUrl} target="_blank" rel="noopener" class="web-link">网页版 ↗</a>
+              <a href={app.webUrl} target="_blank" rel="noopener" class="web-link">{t.apps.webLink}</a>
             </>
           )}
         </div>
       </div>
-      <a href={app.manifest.downloadUrl} download class="dl-btn">下载 APK</a>
+      <a href={app.manifest.downloadUrl} download class="dl-btn">{t.apps.download}</a>
     </li>
   ))}
 </ul>

@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from './Nav.astro';
+import SideLeft from './SideLeft.astro';
+import SideRight from './SideRight.astro';
+import Apps from './Apps.astro';
+import Footer from './Footer.astro';
+import { getDict, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getDict(lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title={t.pageApps.metaTitle}
+  description={t.pageApps.metaDesc}
+  ogImage="/og-apps.png"
+>
+  <Nav lang={lang} />
+  <SideLeft />
+  <SideRight />
+  <main>
+    <section id="apps">
+      <h1 class="page-heading"><span class="num">03.</span>{t.pageApps.pageHeading}</h1>
+      <p class="page-intro">
+        <strong>{t.pageApps.introSyncStrong}</strong>{t.pageApps.introSyncAfter}<strong>{t.pageApps.introOfflineStrong}</strong>{t.pageApps.introOfflineAfter}
+      </p>
+      <Apps lang={lang} />
+      <p class="install-hint">{t.pageApps.installHint}</p>
+    </section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  main {
+    padding-top: 130px;
+    padding-bottom: 80px;
+  }
+  .page-heading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: clamp(28px, 5vw, 36px);
+    color: var(--slate-light);
+    font-weight: 600;
+    margin-bottom: 28px;
+    letter-spacing: -0.01em;
+  }
+  .page-heading .num {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 22px;
+    font-weight: 400;
+  }
+  .page-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--slate-dark);
+    max-width: 300px;
+    margin-left: 20px;
+  }
+  .page-intro {
+    color: var(--slate);
+    font-size: 16px;
+    line-height: 1.75;
+    max-width: 720px;
+    margin-bottom: 32px;
+  }
+  .page-intro strong {
+    color: var(--slate-light);
+    font-weight: 500;
+  }
+  .install-hint {
+    margin-top: 40px;
+    color: var(--slate);
+    font-size: 13px;
+    line-height: 1.75;
+    text-align: center;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media (max-width: 699px) {
+    main { padding-top: 100px; }
+  }
+</style>
