@@ -132,7 +132,7 @@ draft: false
 - [ ] Vercel Analytics / Speed Insights 开启
 
 ### 长期
-- [ ] 英文版（独立 `/en/` 路径，不是实时切换）
+- [ ] 博客双语化（中英 markdown 成对：`xxx.md` + `xxx.en.md`，下一轮做）
 - [ ] OG 图动态生成（目前是静态占位）
 - [ ] 暗色 / 浅色主题切换（但可能不做——坚持暗色作品集风格）
 
@@ -142,6 +142,7 @@ draft: false
 - [x] 世界地图组件实装：`Travel.astro` 用 d3-geo + topojson 渲染，数据 `src/data/visited-countries.json` + `public/data/world-110m.json`
 - [x] `ledger-4.jpg` 隐私覆盖肉眼复核通过（用户名/邮箱区域被灰色块完整覆盖）
 - [x] `hi@tuchenguang.com` 邮件接收已配置并跑通（用户 2026-05-07 确认）
+- [x] 英文版（独立 `/en/` 路径）2026-05-08 上线：`src/i18n/{zh,en,index}.ts` 字典 + Nav 切换链接 + `HomePage`/`AppsPage`/`TravelPage` 共享 page body；`projects.ts`/`now.ts` 数据双语字段，`travel-i18n.ts` 维护 country/region/city/note 映射。博客中文保留，下一轮做英文 markdown
 
 ---
 
