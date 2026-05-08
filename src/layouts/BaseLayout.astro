@@ -1,34 +1,45 @@
 ---
 import '../styles/global.css';
+import { getDict, htmlLangAttr, type Lang } from '../i18n';
 
 interface Props {
+  lang?: Lang;
   title?: string;
   description?: string;
   ogImage?: string;
 }
 
 const {
-  title = '涂晨光 Tu Chenguang',
-  description = '我是一名在马来西亚就读的电子与电气工程大一学生，来自浙江杭州。这里记录我的成长，以及一些顺手做出来的小东西。',
+  lang = 'zh',
+  title,
+  description,
   ogImage = '/images/og-image.png',
 } = Astro.props;
+
+const t = getDict(lang);
+const finalTitle = title ?? t.baseMeta.title;
+const finalDesc = description ?? t.baseMeta.description;
+const htmlLang = htmlLangAttr(lang);
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang={htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <title>{finalTitle}</title>
+    <meta name="description" content={finalDesc} />
+    <meta property="og:title" content={finalTitle} />
+    <meta property="og:description" content={finalDesc} />
     <meta property="og:type" content="website" />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate" type="application/rss+xml" title="涂晨光的博客" href="/rss.xml" />
+    {lang === 'zh' && (
+      <link rel="alternate" type="application/rss+xml" title={t.baseMeta.rssTitle} href="/rss.xml" />
+    )}
     <meta name="generator" content={Astro.generator} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

@@ -1,15 +1,45 @@
 ---
+import { getDict, switchLangHref, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'zh' } = Astro.props;
+const t = getDict(lang);
+
+const homeHref = lang === 'zh' ? '/' : '/en/';
+const blogHref = lang === 'zh' ? '/blog' : '/en/blog';
+const altLangHref = switchLangHref(Astro.url.pathname, lang);
 ---
 
 <nav id="nav">
-  <a href="/" class="logo">TCG</a>
+  <a href={homeHref} class="logo">TCG</a>
   <ul class="nav-links">
-    <li><a href="/#about"><span class="num">01.</span>关于</a></li>
-    <li><a href="/#projects"><span class="num">02.</span>作品</a></li>
-    <li><a href="/#apps"><span class="num">03.</span>下载</a></li>
-    <li><a href="/#now"><span class="num">04.</span>正在做</a></li>
-    <li><a href="/#travel"><span class="num">05.</span>足迹</a></li>
-    <li><a href="/#contact"><span class="num">06.</span>联系</a></li>
-    <li><a href="/blog" class="resume-btn">博客</a></li>
+    <li><a href={`${homeHref}#about`}><span class="num">01.</span>{t.nav.about}</a></li>
+    <li><a href={`${homeHref}#projects`}><span class="num">02.</span>{t.nav.work}</a></li>
+    <li><a href={`${homeHref}#apps`}><span class="num">03.</span>{t.nav.apps}</a></li>
+    <li><a href={`${homeHref}#now`}><span class="num">04.</span>{t.nav.now}</a></li>
+    <li><a href={`${homeHref}#travel`}><span class="num">05.</span>{t.nav.travel}</a></li>
+    <li><a href={`${homeHref}#contact`}><span class="num">06.</span>{t.nav.contact}</a></li>
+    <li class="lang-switch">
+      <a href={altLangHref} aria-label={t.nav.langSwitchAria}>{t.nav.langSwitch}</a>
+    </li>
+    {lang === 'zh' && (
+      <li><a href={blogHref} class="resume-btn">{t.nav.blog}</a></li>
+    )}
   </ul>
 </nav>
+
+<style>
+  /* 语言切换：与其他导航链同款字号/字族，仅去掉前缀编号；不要按钮、不要下拉、不要 emoji */
+  .lang-switch a {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--slate-light);
+    text-decoration: none;
+    padding: 4px 2px;
+    transition: color 0.2s;
+  }
+  .lang-switch a:hover { color: var(--accent); }
+</style>
