@@ -13,14 +13,16 @@ const { post, lang } = Astro.props;
 const { Content } = await render(post);
 const { slug } = splitBlogId(post.id);
 
-// 检查另一语言是否存在该 slug；存在则镜像跳转，否则跳到对方博客列表（避免 404）
+// 检查另一语言是否存在该 slug。存在则镜像跳转 + 双向 hreflang；不存在则 lang
+// 切换跳到对方博客列表（兜底避免 404），并抑制 hreflang 对端语言（避免误导
+// 搜索引擎把列表页当作翻译版本）。
 const otherLang: Lang = lang === 'zh' ? 'en' : 'zh';
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const otherExists = allPosts.some((p) => {
   const parsed = splitBlogId(p.id);
   return parsed.slug === slug && parsed.lang === otherLang;
 });
-const langSwitchHref = otherExists ? blogPostHref(slug, otherLang) : blogIndexHref(otherLang);
+const altLangHref = otherExists ? blogPostHref(slug, otherLang) : blogIndexHref(otherLang);
 ---
 
 <BlogPostLayout
@@ -30,7 +32,8 @@ const langSwitchHref = otherExists ? blogPostHref(slug, otherLang) : blogIndexHr
   pubDate={post.data.pubDate}
   updatedDate={post.data.updatedDate}
   tags={post.data.tags}
-  langSwitchHref={langSwitchHref}
+  altLangHref={altLangHref}
+  hasAltLang={otherExists}
 >
   <Content />
 </BlogPostLayout>

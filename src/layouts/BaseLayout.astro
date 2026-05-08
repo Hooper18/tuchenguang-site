@@ -1,12 +1,24 @@
 ---
 import '../styles/global.css';
-import { getDict, htmlLangAttr, type Lang } from '../i18n';
+import { getDict, htmlLangAttr, switchLangHref, type Lang } from '../i18n';
 
 interface Props {
   lang?: Lang;
   title?: string;
   description?: string;
   ogImage?: string;
+  /** Path of this page in the OTHER language. Used for hreflang alternate AND
+   *  Nav's lang switch. Defaults to the mirror computed from current path.
+   *  Pages where the other-language version doesn't exist as a true translation
+   *  (e.g. an orphan blog post) should set hasAltLang=false and pass a sane
+   *  fallback path here. */
+  altLangHref?: string;
+  /** Whether the other language has a real translation of this page. When false,
+   *  the hreflang link for the other language is omitted (Nav still renders the
+   *  lang switch with the fallback URL). Default true. */
+  hasAltLang?: boolean;
+  /** Suppress canonical / hreflang / sitemap inclusion. Used by 404. */
+  noIndex?: boolean;
 }
 
 const {
@@ -14,12 +26,26 @@ const {
   title,
   description,
   ogImage = '/images/og-image.png',
+  altLangHref,
+  hasAltLang = true,
+  noIndex = false,
 } = Astro.props;
 
 const t = getDict(lang);
 const finalTitle = title ?? t.baseMeta.title;
 const finalDesc = description ?? t.baseMeta.description;
 const htmlLang = htmlLangAttr(lang);
+
+// Build absolute URLs for hreflang/canonical. Astro.site is configured to
+// 'https://tuchenguang.com' in astro.config.mjs.
+const site = Astro.site!;
+const currentPath = Astro.url.pathname;
+const otherPath = altLangHref ?? switchLangHref(currentPath, lang);
+const zhPath = lang === 'zh' ? currentPath : otherPath;
+const enPath = lang === 'en' ? currentPath : otherPath;
+const zhUrl = new URL(zhPath, site).toString();
+const enUrl = new URL(enPath, site).toString();
+const canonicalUrl = lang === 'zh' ? zhUrl : enUrl;
 ---
 
 <!doctype html>
@@ -29,6 +55,18 @@ const htmlLang = htmlLangAttr(lang);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{finalTitle}</title>
     <meta name="description" content={finalDesc} />
+    {noIndex && <meta name="robots" content="noindex" />}
+    {!noIndex && (
+      <>
+        <link rel="canonical" href={canonicalUrl} />
+        {/* hreflang for current language always emitted; other language only when a real translation exists */}
+        {lang === 'zh' && <link rel="alternate" hreflang="zh-CN" href={zhUrl} />}
+        {lang === 'en' && <link rel="alternate" hreflang="en" href={enUrl} />}
+        {hasAltLang && lang === 'zh' && <link rel="alternate" hreflang="en" href={enUrl} />}
+        {hasAltLang && lang === 'en' && <link rel="alternate" hreflang="zh-CN" href={zhUrl} />}
+        <link rel="alternate" hreflang="x-default" href={zhUrl} />
+      </>
+    )}
     <meta property="og:title" content={finalTitle} />
     <meta property="og:description" content={finalDesc} />
     <meta property="og:type" content="website" />

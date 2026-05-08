@@ -14,16 +14,27 @@ interface Props {
   pubDate: Date;
   updatedDate?: Date;
   tags?: string[];
-  /** Override Nav's lang switch href (e.g. when the other-language post is missing). */
-  langSwitchHref?: string;
+  /** Path of this post in the OTHER language. If hasAltLang is false this should
+   *  be a sane fallback (e.g. the other-language blog list). */
+  altLangHref?: string;
+  /** Whether a real translation of this post exists in the other language.
+   *  Drives both BaseLayout's hreflang and Nav's lang switch (Nav still renders
+   *  the link even when false, just using the fallback URL). */
+  hasAltLang?: boolean;
 }
 
-const { lang, title, description, pubDate, updatedDate, tags = [], langSwitchHref } = Astro.props;
+const { lang, title, description, pubDate, updatedDate, tags = [], altLangHref, hasAltLang = true } = Astro.props;
 const t = getDict(lang);
 ---
 
-<BaseLayout lang={lang} title={`${title} — ${t.baseMeta.title}`} description={description}>
-  <Nav lang={lang} langSwitchHref={langSwitchHref} />
+<BaseLayout
+  lang={lang}
+  title={`${title} — ${t.baseMeta.title}`}
+  description={description}
+  altLangHref={altLangHref}
+  hasAltLang={hasAltLang}
+>
+  <Nav lang={lang} langSwitchHref={altLangHref} />
   <SideLeft />
   <SideRight />
   <main class="blog-main">
