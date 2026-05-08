@@ -1,15 +1,15 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
-import { zh } from '../i18n/zh';
+import { en } from '../../i18n/en';
 
 export async function GET(context) {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  const zhPosts = posts.filter((p) => p.id.endsWith('/zh'));
+  const enPosts = posts.filter((p) => p.id.endsWith('/en'));
   return rss({
-    title: zh.blog.rssTitle,
-    description: zh.blog.rssDesc,
+    title: en.blog.rssTitle,
+    description: en.blog.rssDesc,
     site: context.site,
-    items: zhPosts
+    items: enPosts
       .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
       .map((post) => {
         const slug = post.id.split('/')[0];
@@ -17,7 +17,7 @@ export async function GET(context) {
           title: post.data.title,
           pubDate: post.data.pubDate,
           description: post.data.description,
-          link: `/blog/${slug}/`,
+          link: `/en/blog/${slug}/`,
         };
       }),
   });
