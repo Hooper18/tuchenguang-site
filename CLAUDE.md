@@ -143,18 +143,17 @@ draft: false
 - [x] `hi@tuchenguang.com` 邮件接收已配置并跑通（用户 2026-05-07 确认）
 - [x] 英文版（独立 `/en/` 路径）2026-05-08 上线：`src/i18n/{zh,en,index}.ts` 字典 + Nav 切换链接 + `HomePage`/`AppsPage`/`TravelPage` 共享 page body；`projects.ts`/`now.ts` 数据双语字段，`travel-i18n.ts` 维护 country/region/city/note 映射
 - [x] 博客双语化 2026-05-08 上线：markdown 改 `slug/{zh,en}.md` 目录结构（id 形如 `quant-failed/zh`），`src/data/blog.ts` 提供 splitBlogId 等工具；`BlogListPage`/`BlogPostPage` 共享组件，`/blog` 和 `/en/blog` 各自一行入口；BlogPostPage 检查对端语言版本是否存在，缺翻译时 lang switch 兜底跳列表页；RSS 双源 `/rss.xml` `/en/rss.xml`，BaseLayout alternate link 跟随 lang
+- [x] 技术债清理 2026-05-08：lastUpdated 文案与日期解耦（`now.ts` 导 Date，formatDate 上提到 `i18n/index.ts`）；`Bilingual`/`pickText` 抽到 `data/_shared.ts`；直辖市 region===city 不再渲染两次；移动端 nav 隐藏改 class-based；`public/robots.txt` + `public/sitemap-index.xml`（astro-sitemap 配 i18n 自动出 hreflang）；BaseLayout 加 hreflang/canonical/x-default 三件套，BlogPostPage 用 hasAltLang 抑制孤儿篇的虚假翻译标记；双语 404 页（pathname 探测 + noIndex）；`path-to-regexp` 经 npm overrides 锁 ^8，3 high → 0
 
 ---
 
-## 已知依赖告警（不紧迫）
+## 已知依赖告警
 
-- `path-to-regexp` 链 ReDoS（GHSA-9wv6-86v2-598j，3 high）来自
-  `@astrojs/vercel → @vercel/routing-utils → path-to-regexp@6.x`。
-  上游 `@vercel/routing-utils` 还未升级。
-- **本站影响接近零**：`output: 'static'`，所有路由在 build 时静态
-  生成，部署后不走运行时路径匹配，ReDoS 不可触发。
-- 修复路径：等上游升级，或在 package.json 加 `overrides` 锁
-  `path-to-regexp@^8.0.0`（需先验证 `@vercel/routing-utils` API 兼容）。
+- `path-to-regexp` 链 ReDoS（GHSA-9wv6-86v2-598j）：已通过 `package.json`
+  顶层 `overrides` 锁 `path-to-regexp@^8`，3 high 已消除，build 验证 13
+  页面全部正常生成。等 `@vercel/routing-utils` 上游升级后可移除 override。
+- 当前 `npm audit` 剩 5 moderate 来自 dev-only `@astrojs/check → ... → yaml`，
+  不影响生产；等 `@astrojs/check` 升级即解决。
 - `fast-xml-parser` XML 注入（GHSA-gh4j-gqv2-49f6）已通过升级
   `@astrojs/vercel` 到 10.0.6 间接修复。
 
