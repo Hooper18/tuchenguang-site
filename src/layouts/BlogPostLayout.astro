@@ -4,33 +4,36 @@ import Nav from '../components/Nav.astro';
 import SideLeft from '../components/SideLeft.astro';
 import SideRight from '../components/SideRight.astro';
 import Footer from '../components/Footer.astro';
+import { getDict, type Lang } from '../i18n';
+import { formatDate, blogIndexHref } from '../data/blog';
 
 interface Props {
+  lang: Lang;
   title: string;
   description: string;
   pubDate: Date;
   updatedDate?: Date;
   tags?: string[];
+  /** Override Nav's lang switch href (e.g. when the other-language post is missing). */
+  langSwitchHref?: string;
 }
 
-const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
-
-const formatDate = (d: Date) =>
-  d.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+const { lang, title, description, pubDate, updatedDate, tags = [], langSwitchHref } = Astro.props;
+const t = getDict(lang);
 ---
 
-<BaseLayout title={`${title} — 涂晨光`} description={description}>
-  <Nav />
+<BaseLayout lang={lang} title={`${title} — ${t.baseMeta.title}`} description={description}>
+  <Nav lang={lang} langSwitchHref={langSwitchHref} />
   <SideLeft />
   <SideRight />
   <main class="blog-main">
     <article class="blog-article">
       <header class="blog-header reveal">
-        <a href="/blog" class="back-link">← 返回博客</a>
+        <a href={blogIndexHref(lang)} class="back-link">{t.blog.backToBlog}</a>
         <h1 class="blog-title">{title}</h1>
         <div class="blog-meta">
-          <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
-          {updatedDate && <span>· 更新于 <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time></span>}
+          <time datetime={pubDate.toISOString()}>{formatDate(pubDate, lang)}</time>
+          {updatedDate && <span>· {t.blog.updatedOn} <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate, lang)}</time></span>}
         </div>
         {tags.length > 0 && (
           <ul class="blog-tags">
@@ -43,7 +46,7 @@ const formatDate = (d: Date) =>
       </div>
     </article>
   </main>
-  <Footer />
+  <Footer lang={lang} />
 </BaseLayout>
 
 <style>

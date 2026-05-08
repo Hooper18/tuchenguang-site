@@ -1,0 +1,145 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from './Nav.astro';
+import SideLeft from './SideLeft.astro';
+import SideRight from './SideRight.astro';
+import Footer from './Footer.astro';
+import { getDict, type Lang } from '../i18n';
+import { splitBlogId, formatDate, blogPostHref } from '../data/blog';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getDict(lang);
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = allPosts
+  .filter((p) => splitBlogId(p.id).lang === lang)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout lang={lang} title={t.blog.metaTitle} description={t.blog.metaDesc}>
+  <Nav lang={lang} />
+  <SideLeft />
+  <SideRight />
+  <main class="blog-list-main">
+    <div class="blog-list-inner">
+      <h1 class="blog-list-title reveal"><span class="num">{t.blog.listTitle}</span></h1>
+      <ul class="post-list">
+        {posts.map((post) => {
+          const { slug } = splitBlogId(post.id);
+          return (
+            <li class="post-item reveal">
+              <a href={blogPostHref(slug, lang)} class="post-link">
+                <time class="post-date">{formatDate(post.data.pubDate, lang)}</time>
+                <h2 class="post-title">{post.data.title}</h2>
+                <p class="post-desc">{post.data.description}</p>
+                {post.data.tags.length > 0 && (
+                  <ul class="post-tags">
+                    {post.data.tags.map((tag) => <li>{tag}</li>)}
+                  </ul>
+                )}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  .blog-list-main {
+    padding: 0 100px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 120px;
+    padding-bottom: 100px;
+  }
+  .blog-list-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .blog-list-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: clamp(26px, 5vw, 32px);
+    color: var(--slate-light);
+    font-weight: 600;
+    margin-bottom: 50px;
+    letter-spacing: -0.01em;
+  }
+  .blog-list-title .num {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 20px;
+    font-weight: 400;
+  }
+  .blog-list-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--slate-dark);
+    max-width: 300px;
+    margin-left: 20px;
+  }
+  .post-list { list-style: none; }
+  .post-item { margin-bottom: 40px; }
+  .post-link {
+    display: block;
+    text-decoration: none;
+    padding: 24px;
+    border: 1px solid var(--slate-dark);
+    border-radius: 6px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .post-link:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .post-date {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .post-title {
+    font-size: 20px;
+    color: var(--slate-light);
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .post-desc {
+    font-size: 14.5px;
+    color: var(--slate);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+  }
+  .post-tags li {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    padding: 2px 8px;
+  }
+  @media (max-width: 1099px) {
+    .blog-list-main { padding: 120px 50px 100px; }
+  }
+  @media (max-width: 699px) {
+    .blog-list-main { padding: 100px 20px 80px; }
+  }
+</style>
