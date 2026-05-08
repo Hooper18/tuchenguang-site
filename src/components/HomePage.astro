@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from './Nav.astro';
+import SideLeft from './SideLeft.astro';
+import SideRight from './SideRight.astro';
+import Hero from './Hero.astro';
+import About from './About.astro';
+import Projects from './Projects.astro';
+import Apps from './Apps.astro';
+import Now from './Now.astro';
+import Travel from './Travel.astro';
+import Contact from './Contact.astro';
+import Footer from './Footer.astro';
+import { getDict, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getDict(lang);
+---
+
+<BaseLayout lang={lang}>
+  <Nav lang={lang} />
+  <SideLeft />
+  <SideRight />
+  <main>
+    <Hero lang={lang} />
+    <About lang={lang} />
+    <Projects lang={lang} />
+    <section id="apps">
+      <h2 class="section-heading reveal"><span class="num">03.</span>{t.apps.sectionLabel}</h2>
+      <p class="apps-intro reveal">
+        <strong>{t.apps.introSyncStrong}</strong>{t.apps.introSyncAfter}<strong>{t.apps.introOfflineStrong}</strong>{t.apps.introOfflineAfter}
+      </p>
+      <div class="reveal">
+        <Apps lang={lang} />
+      </div>
+    </section>
+    <Now lang={lang} />
+    <Travel lang={lang} />
+    <Contact lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  .apps-intro {
+    color: var(--slate);
+    font-size: 16px;
+    line-height: 1.75;
+    margin-bottom: 32px;
+  }
+  .apps-intro strong {
+    color: var(--slate-light);
+    font-weight: 500;
+  }
+</style>
