@@ -1,6 +1,6 @@
 ---
-import { nowItems, pickText } from '../data/now';
-import { getDict, type Lang } from '../i18n';
+import { nowItems, pickText, nowLastUpdated } from '../data/now';
+import { getDict, formatDate, type Lang } from '../i18n';
 
 interface Props {
   lang?: Lang;
@@ -18,7 +18,7 @@ const statusClass = (status: string) => {
 
 <section id="now">
   <h2 class="section-heading reveal"><span class="num">04.</span>{t.now.sectionLabel}</h2>
-  <p class="now-updated reveal">{t.now.lastUpdated}</p>
+  <p class="now-updated reveal">{t.now.lastUpdatedPrefix}{formatDate(nowLastUpdated, lang)}</p>
   <div class="now-timeline reveal">
     {nowItems.map((item) => (
       <div class={`now-item${statusClass(item.status)}`}>

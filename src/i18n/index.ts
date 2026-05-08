@@ -31,3 +31,9 @@ export function switchLangHref(currentPath: string, currentLang: Lang): string {
 export function htmlLangAttr(lang: Lang): string {
   return lang === 'zh' ? 'zh-CN' : 'en';
 }
+
+/** Format a Date for the given UI language. zh → "2026年5月5日", en → "May 5, 2026". */
+export function formatDate(d: Date, lang: Lang): string {
+  const locale = lang === 'zh' ? 'zh-CN' : 'en-US';
+  return d.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+}

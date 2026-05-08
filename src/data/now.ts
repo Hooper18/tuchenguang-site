@@ -1,9 +1,8 @@
-import type { Lang } from '../i18n';
+import type { Bilingual } from './_shared';
+export { pickText } from './_shared';
 
-interface Bilingual {
-  zh: string;
-  en: string;
-}
+/** 整个 Now 区块最后一次手动整理的时间。组件按 lang 调 formatDate 渲染。 */
+export const nowLastUpdated = new Date('2026-05-05');
 
 export interface NowItem {
   status: 'active' | 'inactive' | 'done';
@@ -11,10 +10,6 @@ export interface NowItem {
   title: Bilingual;
   description: Bilingual;
   url?: string;
-}
-
-export function pickText(field: Bilingual, lang: Lang): string {
-  return field[lang];
 }
 
 const STATUS = {

@@ -62,7 +62,7 @@ export const zh = {
 
   now: {
     sectionLabel: '正在做',
-    lastUpdated: '最后一次更新时间：2026 年 5 月 5 日',
+    lastUpdatedPrefix: '最后一次更新时间：',
     statusActive: '● 进行中',
     statusDone: '✓ 已完成',
     statusInactive: '○ 暂停',

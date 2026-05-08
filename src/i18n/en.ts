@@ -70,7 +70,7 @@ export const en: DeepStringify<Dict> = {
 
   now: {
     sectionLabel: 'Now',
-    lastUpdated: 'Last updated: May 5, 2026',
+    lastUpdatedPrefix: 'Last updated: ',
     statusActive: '● In progress',
     statusDone: '✓ Done',
     statusInactive: '○ On hold',
