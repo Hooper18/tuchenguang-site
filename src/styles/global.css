@@ -574,7 +574,7 @@ footer a { color: var(--slate); text-decoration: none; }
   main { padding: 0 20px; }
   #hero { padding-top: 60px; }
   .nav-links { gap: 16px; }
-  .nav-links li:nth-child(-n+4) { display: none; }
+  .nav-links .nav-mobile-hide { display: none; }
   #about .inner { grid-template-columns: 1fr; gap: 30px; }
   .avatar-box { margin: 30px auto 0; }
   section { padding: 60px 0; }

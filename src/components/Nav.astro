@@ -19,10 +19,10 @@ const altLangHref = langSwitchHref ?? switchLangHref(Astro.url.pathname, lang);
 <nav id="nav">
   <a href={homeHref} class="logo">TCG</a>
   <ul class="nav-links">
-    <li><a href={`${homeHref}#about`}><span class="num">01.</span>{t.nav.about}</a></li>
-    <li><a href={`${homeHref}#projects`}><span class="num">02.</span>{t.nav.work}</a></li>
-    <li><a href={`${homeHref}#apps`}><span class="num">03.</span>{t.nav.apps}</a></li>
-    <li><a href={`${homeHref}#now`}><span class="num">04.</span>{t.nav.now}</a></li>
+    <li class="nav-mobile-hide"><a href={`${homeHref}#about`}><span class="num">01.</span>{t.nav.about}</a></li>
+    <li class="nav-mobile-hide"><a href={`${homeHref}#projects`}><span class="num">02.</span>{t.nav.work}</a></li>
+    <li class="nav-mobile-hide"><a href={`${homeHref}#apps`}><span class="num">03.</span>{t.nav.apps}</a></li>
+    <li class="nav-mobile-hide"><a href={`${homeHref}#now`}><span class="num">04.</span>{t.nav.now}</a></li>
     <li><a href={`${homeHref}#travel`}><span class="num">05.</span>{t.nav.travel}</a></li>
     <li><a href={`${homeHref}#contact`}><span class="num">06.</span>{t.nav.contact}</a></li>
     <li class="lang-switch">
