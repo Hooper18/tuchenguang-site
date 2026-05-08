@@ -42,11 +42,13 @@ for (const p of travels) {
 const sortedYears = Object.keys(byYear).sort((a, b) => parseInt(b) - parseInt(a));
 
 // 时间线条目展示逻辑：
-//  · 中国大陆：region · city（如 浙江 · 杭州 / Zhejiang · Hangzhou）
+//  · 中国大陆直辖市（region===city，如 重庆/上海）：只显示一次
+//  · 中国大陆其他：region · city（如 浙江 · 杭州 / Zhejiang · Hangzhou）
 //  · 港澳：直接 city（香港 / Hong Kong）
 //  · 国外：country · city（日本 · 东京 / Japan · Tokyo）
 function displayLabel(p: Place): string {
   if (p.country === '中国' && p.region) {
+    if (p.region === p.city) return tCity(p.city, lang);
     return `${tRegion(p.region, lang)} · ${tCity(p.city, lang)}`;
   }
   if (p.country === '中国香港') return tCity('香港', lang);
