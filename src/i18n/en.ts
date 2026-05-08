@@ -121,8 +121,9 @@ export const en: DeepStringify<Dict> = {
     mapFailed: 'Failed to load map',
     untilNow: 'present',
     tooltipMonth: (year: string, month: string) => {
-      const names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      return `${names[Number(month) - 1]} ${year}`;
+      // Day = 1 keeps timezone offsets from rolling the month over.
+      const date = new Date(Number(year), Number(month) - 1, 1);
+      return new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' }).format(date);
     },
   },
 
