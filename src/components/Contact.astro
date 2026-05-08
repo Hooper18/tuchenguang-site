@@ -1,8 +1,16 @@
 ---
+import { getDict, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'zh' } = Astro.props;
+const t = getDict(lang);
 ---
 
 <section id="contact">
-  <div class="contact-overline reveal">06. 下一步</div>
-  <h2 class="contact-title reveal">聊聊吧</h2>
-  <a href="mailto:hi@tuchenguang.com" class="contact-btn reveal">发封邮件</a>
+  <div class="contact-overline reveal">{t.contact.overline}</div>
+  <h2 class="contact-title reveal">{t.contact.title}</h2>
+  <a href="mailto:hi@tuchenguang.com" class="contact-btn reveal">{t.contact.btn}</a>
 </section>

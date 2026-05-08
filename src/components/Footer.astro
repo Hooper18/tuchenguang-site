@@ -1,7 +1,15 @@
 ---
+import { getDict, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'zh' } = Astro.props;
+const t = getDict(lang);
 ---
 
 <footer>
-  <a href="https://github.com/Hooper18" target="_blank">设计与制造 by Tu Chenguang</a>
-  <div style="margin-top: 8px; opacity: 0.6;">灵感致敬 brittanychiang.com</div>
+  <a href="https://github.com/Hooper18" target="_blank">{t.footer.by}</a>
+  <div style="margin-top: 8px; opacity: 0.6;">{t.footer.inspiredBy}</div>
 </footer>

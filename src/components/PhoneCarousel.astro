@@ -1,10 +1,14 @@
 ---
+import { getDict, type Lang } from '../i18n';
+
 interface Props {
   images: string[];
   id: string;
+  lang?: Lang;
 }
 
-const { images, id } = Astro.props;
+const { images, id, lang = 'zh' } = Astro.props;
+const t = getDict(lang);
 const hasMultiple = images.length > 1;
 ---
 
@@ -20,8 +24,8 @@ const hasMultiple = images.length > 1;
   </div>
   {hasMultiple && (
     <>
-      <button class="arrow prev" aria-label="上一张">&#8249;</button>
-      <button class="arrow next" aria-label="下一张">&#8250;</button>
+      <button class="arrow prev" aria-label={t.carousel.prevAria}>&#8249;</button>
+      <button class="arrow next" aria-label={t.carousel.nextAria}>&#8250;</button>
       <div class="dots">
         {images.map((_, i) => (
           <button class={`dot${i === 0 ? ' active' : ''}`} data-idx={i}></button>
