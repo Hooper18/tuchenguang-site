@@ -360,8 +360,7 @@ const placesForScript = allPlaces.map(p => ({ ...p, _tip: tooltipText(p) }));
         });
       });
 
-    // @ts-ignore d3-selection 类型和原生 SVGSVGElement 对接
-    select(svgEl).call(zoomBehavior as any);
+    select<SVGSVGElement, unknown>(svgEl).call(zoomBehavior);
 
     if (loadingEl) loadingEl.remove();
   } catch (err) {
