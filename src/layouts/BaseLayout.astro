@@ -120,4 +120,18 @@ const canonicalUrl = lang === 'zh' ? zhUrl : enUrl;
     { threshold: 0.1 }
   );
   document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+  // 访问统计 ping —— 每次 page load 一发，bot/headless 标记上报
+  const URL = import.meta.env.PUBLIC_METRICS_URL;
+  const KEY = import.meta.env.PUBLIC_METRICS_ANON_KEY;
+  if (URL && KEY) {
+    const ua = navigator.userAgent || '';
+    const BOT_RE = /bot|spider|crawl|headless|lighthouse|pagespeed|facebookexternalhit|preview/i;
+    const isBot = navigator.webdriver === true || BOT_RE.test(ua);
+    fetch(`${URL}/rest/v1/visit_events`, {
+      method: 'POST',
+      headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ app: 'main', is_bot: isBot, ua: ua.slice(0, 256) }),
+    }).catch(() => {});
+  }
 </script>
