@@ -54,6 +54,8 @@ export const en: DeepStringify<Dict> = {
     liveAria: 'Live',
     apkAria: 'Download APK',
     apkLabel: 'APK',
+    caseStudyLabel: 'Read the dev log →',
+    caseStudyAria: 'Read the full development log',
   },
 
   apps: {

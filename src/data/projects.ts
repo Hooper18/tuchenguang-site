@@ -6,10 +6,11 @@ export interface Project {
   /** 月份标签，如 '2026.4'，不翻译 */
   overline: string;
   title: Bilingual;
-  titleHref: string;
-  domain: string;
-  url: string;
-  github: string;
+  /** 没有公开访问地址的项目（如硬件/嵌入式）留空 */
+  titleHref?: string;
+  domain?: string;
+  url?: string;
+  github?: string;
   description: Bilingual;
   /** 技术栈名称为专有名词，不翻译 */
   tech: string[];
@@ -17,6 +18,8 @@ export interface Project {
   reverse: boolean;
   /** /apps 页对应 slug；有值代表这个项目已经打成 APK，可在主页加'下载'入口。 */
   apkSlug?: string;
+  /** 博客长文 slug；有值代表卡片底部加'完整开发记录 →'链接到 /blog/<slug>。 */
+  caseStudySlug?: string;
 }
 
 export const projects: Project[] = [
@@ -104,5 +107,24 @@ export const projects: Project[] = [
     ],
     reverse: true,
     apkSlug: 'tuner',
+  },
+  {
+    slug: 'esp32p4',
+    overline: '2026.5',
+    title: { zh: 'ESP32-P4 智能视觉终端', en: 'ESP32-P4 Smart Vision Terminal' },
+    github: 'https://github.com/Hooper18/esp32p4_competition',
+    description: {
+      zh: '准备嵌入式系统比赛的硬件项目。ESP32-P4 + ESP32-C3 双 MCU 架构，整合 MIPI LCD、摄像头、麦克风、喇叭和 Wi-Fi 协处理器。按一下录音对着说话，云端 Whisper + GPT-4o + TTS 走一圈，喇叭回答你；过程中 AI 还能主动调用拍照、查天气、设定时器这些工具。完整开发历程见博客。',
+      en: "A hardware project I'm prepping for the embedded-systems competition. ESP32-P4 + ESP32-C3 dual-MCU stack — MIPI LCD, camera, mic, speaker and a Wi-Fi coprocessor wired together. Hit record, talk to it; the cloud loop runs Whisper + GPT-4o + TTS and the speaker answers, while GPT can call tools like take_photo, get_weather, set_timer on the fly. Full dev log in the blog.",
+    },
+    tech: ['ESP32-P4', 'ESP32-C3', 'ESP-IDF', 'C/C++', 'FreeRTOS', 'LVGL', 'MIPI CSI/DSI', 'I2S', 'UART', 'OpenAI API', 'Function Calling'],
+    images: [
+      '/images/projects/esp32p4-1.jpg',
+      '/images/projects/esp32p4-2.jpg',
+      '/images/projects/esp32p4-3.jpg',
+      '/images/projects/esp32p4-4.jpg',
+    ],
+    reverse: false,
+    caseStudySlug: 'esp32p4-competition',
   },
 ];

@@ -46,6 +46,8 @@ export const zh = {
     liveAria: '线上',
     apkAria: '下载 APK',
     apkLabel: 'APK',
+    caseStudyLabel: '完整开发记录 →',
+    caseStudyAria: '阅读完整开发记录',
   },
 
   apps: {
