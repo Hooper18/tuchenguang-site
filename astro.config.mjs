@@ -19,6 +19,8 @@ export default defineConfig({
           en: 'en',
         },
       },
+      // /admin 不应被收录
+      filter: (page) => !page.includes('/admin'),
     }),
   ],
 });
