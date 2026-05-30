@@ -20,6 +20,8 @@ export interface Project {
   apkSlug?: string;
   /** 博客长文 slug；有值代表卡片底部加'完整开发记录 →'链接到 /blog/<slug>。 */
   caseStudySlug?: string;
+  /** 图片渲染方式：phone（手机相框，移动 App 默认）/ hardware（圆角矩形，硬件项目）。 */
+  displayMode?: 'phone' | 'hardware';
 }
 
 export const projects: Project[] = [
@@ -123,8 +125,12 @@ export const projects: Project[] = [
       '/images/projects/esp32p4-2.jpg',
       '/images/projects/esp32p4-3.jpg',
       '/images/projects/esp32p4-4.jpg',
+      '/images/projects/esp32p4-5.jpg',
+      '/images/projects/esp32p4-6.jpg',
+      '/images/projects/esp32p4-7.jpg',
     ],
     reverse: false,
     caseStudySlug: 'esp32p4-competition',
+    displayMode: 'hardware',
   },
 ];

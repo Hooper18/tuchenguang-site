@@ -1,0 +1,60 @@
+---
+// 硬件项目的图片轮播：不套手机相框，直接圆角矩形容器，
+// object-fit: cover 兼顾纵向 LCD 特写和横向工作台全景。
+// 复用 PhoneCarousel 的 .carousel / .slide / .arrow / .dot 全局样式 + 脚本，
+// 只覆写 .hardware-frame 容器和 img 填充方式。
+import { getDict, type Lang } from '../i18n';
+
+interface Props {
+  images: string[];
+  id: string;
+  lang?: Lang;
+}
+
+const { images, id, lang = 'zh' } = Astro.props;
+const t = getDict(lang);
+const hasMultiple = images.length > 1;
+---
+
+<div class="carousel hardware-carousel" data-carousel-id={id}>
+  <div class="hardware-frame">
+    {images.map((src, i) => (
+      <div class={`slide${i === 0 ? ' active' : ''}`}>
+        <img src={src} alt={`Hardware photo ${i + 1}`} loading="lazy" />
+      </div>
+    ))}
+  </div>
+  {hasMultiple && (
+    <>
+      <button class="arrow prev" aria-label={t.carousel.prevAria}>&#8249;</button>
+      <button class="arrow next" aria-label={t.carousel.nextAria}>&#8250;</button>
+      <div class="dots">
+        {images.map((_, i) => (
+          <button class={`dot${i === 0 ? ' active' : ''}`} data-idx={i}></button>
+        ))}
+      </div>
+    </>
+  )}
+</div>
+
+<style>
+  /* 硬件相框：低调圆角 + 细青绿色描边 + 落影。比手机相框克制，不喧宾夺主。 */
+  .hardware-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #050a14;
+    box-shadow:
+      0 0 0 1px rgba(100, 255, 218, 0.08),
+      0 25px 50px -12px rgba(0, 0, 0, 0.55),
+      0 10px 30px -10px rgba(100, 255, 218, 0.06);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .hardware-carousel:hover .hardware-frame { transform: translateY(-6px); }
+  /* 覆写全局 .slide img { object-fit: fill } —— 硬件照片必须 cover */
+  .hardware-frame :global(.slide img) {
+    object-fit: cover;
+  }
+</style>

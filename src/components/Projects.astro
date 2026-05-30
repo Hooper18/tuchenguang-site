@@ -1,5 +1,6 @@
 ---
 import PhoneCarousel from './PhoneCarousel.astro';
+import HardwareCarousel from './HardwareCarousel.astro';
 import { projects, pickText } from '../data/projects';
 import { blogPostHref } from '../data/blog';
 import { getDict, type Lang } from '../i18n';
@@ -68,7 +69,11 @@ const t = getDict(lang);
         </div>
       </div>
       <div class="project-image">
-        <PhoneCarousel images={project.images} id={project.slug} lang={lang} />
+        {project.displayMode === 'hardware' ? (
+          <HardwareCarousel images={project.images} id={project.slug} lang={lang} />
+        ) : (
+          <PhoneCarousel images={project.images} id={project.slug} lang={lang} />
+        )}
       </div>
     </div>
   ))}
