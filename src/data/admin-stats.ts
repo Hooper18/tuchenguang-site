@@ -59,11 +59,4 @@ export const trackedProjects: TrackedProject[] = [
     url: 'https://tuner.tuchenguang.com',
     web: { visits7d: 0, visits30d: 0, visitsTotal: 0, lastSeen: '—' },
   },
-  {
-    slug: 'esp32p4',
-    name: 'ESP32-P4 智能视觉终端',
-    url: 'https://github.com/Hooper18/esp32p4_competition',
-    web: null,
-    note: '硬件项目，无 web 流量',
-  },
 ];
