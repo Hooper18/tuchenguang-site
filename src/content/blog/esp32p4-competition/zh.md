@@ -27,7 +27,11 @@ ASR 7.5s · LLM 5.5s · TTS 5.1s
 [REC] [CAM] [STOP]
 ```
 
+![LCD 上的 HUD 启动后稳定状态](/images/projects/esp32p4-2.jpg)
+
 按 REC，对着 mic 说"现在北京几点"，7.5 秒后听到喇叭说"北京时间 14 点 32 分"。说"5 秒后哔一下"，TTS 播报完"好的已经设置"再过 5 秒哔三声。说"看一眼帮我描述一下"，GPT 主动 call `take_photo`，画面截下来上传，再回答。
+
+![现场实拍：问"今天北京天气怎么样"，GPT 自动 call get_weather，把 Open-Meteo 的结构化结果整理成自然语言再 TTS 播报](/images/projects/esp32p4-3.jpg)
 
 ## 用了什么
 
@@ -186,6 +190,8 @@ UART 链路（v1.2 460800 baud 实测）：
 - 上行 CRC 错误率 0%（实测 175 帧）
 - 下行 CRC 错误率 1.3%（实测 750 帧，全部 NAK 重传成功）
 - 0 fatal errors / 0 链路死锁
+
+![整套设备开发中的样子：左边面包板 + 主控板 + C3 协处理器，右边 LCD 正在跑摄像头预览](/images/projects/esp32p4-5.jpg)
 
 ## 局限性
 

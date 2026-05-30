@@ -27,7 +27,11 @@ ASR 7.5s · LLM 5.5s · TTS 5.1s
 [REC] [CAM] [STOP]
 ```
 
+![Live: the HUD in its boot-greeting stable state](/images/projects/esp32p4-2.jpg)
+
 Hit REC, ask "what time is it in Beijing"; 7.5 seconds later the speaker answers "14:32 Beijing time." Say "beep in 5 seconds"; once TTS finishes saying "sure, timer set," 5 seconds later you hear three beeps. Say "take a look and describe it for me"; GPT calls `take_photo` on its own, the frame goes up, then GPT answers.
+
+![On the bench: asking "how's the weather in Beijing today," GPT calls get_weather on its own, condenses the Open-Meteo JSON into a natural sentence, and the TTS reads it back](/images/projects/esp32p4-3.jpg)
 
 ## What's in the box
 
@@ -186,6 +190,8 @@ UART link (v1.2 at 460800 baud, measured):
 - Uplink CRC error rate 0% (175 frames tested)
 - Downlink CRC error rate 1.3% (750 frames tested, every NAK-retransmit succeeded)
 - 0 fatal errors / 0 link deadlocks
+
+![The full rig mid-development: breadboard + main board + C3 coprocessor on the left, LCD running live camera preview on the right](/images/projects/esp32p4-5.jpg)
 
 ## Limitations
 
