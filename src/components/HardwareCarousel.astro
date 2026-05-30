@@ -38,7 +38,9 @@ const hasMultiple = images.length > 1;
 </div>
 
 <style>
-  /* 硬件相框：低调圆角 + 细青绿色描边 + 落影。比手机相框克制，不喧宾夺主。 */
+  /* 硬件相框：低调圆角 + 细青绿色描边 + 落影。比手机相框克制，不喧宾夺主。
+     7 张实拍混合纵横：用 contain + 深色 letterbox 兜底，
+     保证每张完整可见、内容不被裁掉。 */
   .hardware-frame {
     position: relative;
     width: 100%;
@@ -53,8 +55,8 @@ const hasMultiple = images.length > 1;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   .hardware-carousel:hover .hardware-frame { transform: translateY(-6px); }
-  /* 覆写全局 .slide img { object-fit: fill } —— 硬件照片必须 cover */
+  /* 覆写全局 .slide img { object-fit: fill }：硬件照片用 contain，避免裁掉 LCD/接线等关键信息 */
   .hardware-frame :global(.slide img) {
-    object-fit: cover;
+    object-fit: contain;
   }
 </style>
