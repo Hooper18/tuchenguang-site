@@ -46,10 +46,10 @@ export const nowItems: NowItem[] = [
     label: STATUS.inactive,
     title: { zh: '植物大战僵尸（学习版）', en: 'Plants vs Zombies (learning build)' },
     description: {
-      zh: '用 Phaser 复刻植物大战僵尸来练手——网格种植、波次刷怪、阳光经济等核心循环都跑通了。但越往后越依赖原版美术与音效、自己重做成本过高，也偏离了练 Phaser 的初衷，于是停在半成品，代码留档。',
-      en: "A Phaser remake of Plants vs Zombies to sharpen my game-loop skills — grid planting, wave spawning and the sun economy all work. But it leaned ever harder on the original's art and audio (too costly to redo cleanly) and kept drifting from the learning goal, so I shelved it and archived the code.",
+      zh: '用 Phaser 复刻植物大战僵尸来练手——网格种植、波次刷怪、阳光经济等核心循环都跑通了。但越往后越依赖原版美术与音效、自己重做成本过高，也偏离了练 Phaser 的初衷，于是停在半成品。做出来的部分仍可在线试玩。',
+      en: "A Phaser remake of Plants vs Zombies to sharpen my game-loop skills — grid planting, wave spawning and the sun economy all work. But it leaned ever harder on the original's art and audio (too costly to redo cleanly) and kept drifting from the learning goal, so I shelved it — what I finished is still playable online.",
     },
-    url: 'https://github.com/Hooper18/pvz-app',
+    url: 'https://pvz.tuchenguang.com',
   },
   {
     status: 'active',
