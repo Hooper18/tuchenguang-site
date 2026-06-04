@@ -2,7 +2,7 @@ import type { Bilingual } from './_shared';
 export { pickText } from './_shared';
 
 /** 整个 Now 区块最后一次手动整理的时间。组件按 lang 调 formatDate 渲染。 */
-export const nowLastUpdated = new Date('2026-05-05');
+export const nowLastUpdated = new Date('2026-06-04');
 
 export interface NowItem {
   status: 'active' | 'inactive' | 'done';
@@ -15,7 +15,7 @@ export interface NowItem {
 const STATUS = {
   done: { zh: '✓ 已完成', en: '✓ Done' },
   active: { zh: '● 进行中', en: '● In progress' },
-  inactive: { zh: '○ 暂停', en: '○ On hold' },
+  inactive: { zh: '○ 已搁置', en: '○ Shelved' },
 } as const;
 
 export const nowItems: NowItem[] = [
@@ -32,14 +32,24 @@ export const nowItems: NowItem[] = [
     description: { zh: '', en: '' },
   },
   {
-    status: 'done',
-    label: STATUS.done,
+    status: 'inactive',
+    label: STATUS.inactive,
     title: { zh: '量化交易软件（半成品）', en: 'Algorithmic trading system (shelved)' },
     description: {
       zh: 'BTC/ETH/SOL 量化回测系统，使用符号主义人工智能。想要实现 24 小时交易需要接入服务器，服务器成本相比本金过高；当前未接入联结主义人工智能，算力也不足，无法完成市场风向转变的预测与理解。',
       en: "A backtesting system for BTC/ETH/SOL built around a symbolic-AI rule engine. Running it 24/7 needs a hosted server, and that cost dwarfs my actual capital; without a connectionist model and the compute to back it, the system can't read regime shifts in the market well enough to trust.",
     },
     url: 'https://quant.tuchenguang.com',
+  },
+  {
+    status: 'inactive',
+    label: STATUS.inactive,
+    title: { zh: '植物大战僵尸（学习版）', en: 'Plants vs Zombies (learning build)' },
+    description: {
+      zh: '用 Phaser 复刻植物大战僵尸来练手——网格种植、波次刷怪、阳光经济等核心循环都跑通了。但越往后越依赖原版美术与音效、自己重做成本过高，也偏离了练 Phaser 的初衷，于是停在半成品，代码留档。',
+      en: "A Phaser remake of Plants vs Zombies to sharpen my game-loop skills — grid planting, wave spawning and the sun economy all work. But it leaned ever harder on the original's art and audio (too costly to redo cleanly) and kept drifting from the learning goal, so I shelved it and archived the code.",
+    },
+    url: 'https://github.com/Hooper18/pvz-app',
   },
   {
     status: 'active',
