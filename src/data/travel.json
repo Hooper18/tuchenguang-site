@@ -21,6 +21,7 @@
 
     { "country": "中国香港", "region": null, "city": "香港", "lat": 22.3193, "lng": 114.1694, "date": "2026-04", "type": "travel", "note": null },
     { "country": "中国澳门", "region": null, "city": "澳门", "lat": 22.1987, "lng": 113.5439, "date": "2026-04", "type": "travel", "note": null },
+    { "country": "中国台湾", "region": null, "city": "台北", "lat": 25.0330, "lng": 121.5654, "date": "2026-05", "type": "travel", "note": null },
 
     { "country": "马来西亚", "region": null, "city": "马六甲", "lat": 2.1896, "lng": 102.2501, "date": "2025-12", "type": "travel", "note": null },
     { "country": "新加坡", "region": null, "city": "新加坡", "lat": 1.3521, "lng": 103.8198, "date": "2026-01", "type": "travel", "note": null },

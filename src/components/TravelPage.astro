@@ -53,6 +53,7 @@ function displayLabel(p: Place): string {
   }
   if (p.country === '中国香港') return tCity('香港', lang);
   if (p.country === '中国澳门') return tCity('澳门', lang);
+  if (p.country === '中国台湾') return tCity('台北', lang);
   return `${tCountry(p.country, lang)} · ${tCity(p.city, lang)}`;
 }
 
@@ -173,7 +174,7 @@ const placesForScript = allPlaces.map(p => ({ ...p, _tip: tooltipText(p) }));
   // Visited non-China-mainland country ISO codes
   const countryToISO: Record<string, number> = {
     '马来西亚': 458, '印度尼西亚': 360, '柬埔寨': 116,
-    '日本': 392, '韩国': 410, '新加坡': 702,
+    '日本': 392, '韩国': 410, '新加坡': 702, '中国台湾': 158,
   };
   const visitedISOs = new Set<number>();
   places.forEach(p => { if (countryToISO[p.country]) visitedISOs.add(countryToISO[p.country]); });
