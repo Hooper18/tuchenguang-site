@@ -128,7 +128,6 @@ draft: false
 
 ### 中期
 - [ ] 博客标签分类筛选
-- [ ] RSS feed 完善（现有基本骨架）
 - [ ] Vercel Analytics / Speed Insights 开启
 
 ### 长期
