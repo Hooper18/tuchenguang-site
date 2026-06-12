@@ -2,7 +2,7 @@ import type { Bilingual } from './_shared';
 export { pickText } from './_shared';
 
 /** 整个 Now 区块最后一次手动整理的时间。组件按 lang 调 formatDate 渲染。 */
-export const nowLastUpdated = new Date('2026-06-04');
+export const nowLastUpdated = new Date('2026-06-12');
 
 export interface NowItem {
   status: 'active' | 'inactive' | 'done';
@@ -19,6 +19,16 @@ const STATUS = {
 } as const;
 
 export const nowItems: NowItem[] = [
+  {
+    status: 'done',
+    label: STATUS.done,
+    title: { zh: '世界杯比分预测', en: 'World Cup score predictor' },
+    description: {
+      zh: 'Python 引擎用蒙特卡洛模拟 2026 世界杯全赛程，融合 Elo、攻防强度与点球模型，预测每场比分与各队夺冠概率；React 前端六页图表全部手绘 SVG。',
+      en: 'A Python engine that Monte-Carlo–simulates the entire 2026 World Cup — fusing Elo, attack/defense strength and a penalty model to predict every scoreline and each team\'s title odds; the React front-end renders all six chart pages as hand-drawn SVG.',
+    },
+    url: 'https://worldcup.tuchenguang.com',
+  },
   {
     status: 'done',
     label: STATUS.done,
