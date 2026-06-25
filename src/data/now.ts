@@ -23,11 +23,7 @@ export const nowItems: NowItem[] = [
     status: 'done',
     label: STATUS.done,
     title: { zh: '世界杯比分预测', en: 'World Cup score predictor' },
-    description: {
-      zh: 'Python 引擎用蒙特卡洛模拟 2026 世界杯全赛程，融合 Elo、攻防强度与点球模型，预测每场比分与各队夺冠概率；React 前端六页图表全部手绘 SVG。',
-      en: 'A Python engine that Monte-Carlo–simulates the entire 2026 World Cup — fusing Elo, attack/defense strength and a penalty model to predict every scoreline and each team\'s title odds; the React front-end renders all six chart pages as hand-drawn SVG.',
-    },
-    url: 'https://worldcup.tuchenguang.com',
+    description: { zh: '', en: '' },
   },
   {
     status: 'done',
@@ -60,6 +56,15 @@ export const nowItems: NowItem[] = [
       en: "A Phaser remake of Plants vs Zombies to sharpen my game-loop skills — grid planting, wave spawning and the sun economy all work. But it leaned ever harder on the original's art and audio (too costly to redo cleanly) and kept drifting from the learning goal, so I shelved it — what I finished is still playable online.",
     },
     url: 'https://pvz.tuchenguang.com',
+  },
+  {
+    status: 'inactive',
+    label: STATUS.inactive,
+    title: { zh: 'Moodle 课程下载器', en: 'Moodle course dumper' },
+    description: {
+      zh: '一个浏览器扩展，一键把学校 Moodle 的课程页、公告、附件全量抓到本地，再交给 AI 通读、交叉核对，整理成带置信度标注的 DDL 截止清单——把抓取和理解分开。纯自用工具，没有公开部署。',
+      en: "A browser extension that bulk-grabs my university's Moodle — course pages, announcements, attachments — to disk in one click, then hands it to an LLM to read across and cross-check into a confidence-tagged deadline list, keeping scraping and comprehension separate. A personal tool, never publicly deployed.",
+    },
   },
   {
     status: 'active',
