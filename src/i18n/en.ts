@@ -27,7 +27,7 @@ export const en: DeepStringify<Dict> = {
     name: 'Tu Chenguang.',
     taglineLine1: 'Welcome to',
     taglineLine2: 'my world.',
-    descBefore: "I'm a first-year Electrical & Electronic Engineering student in Malaysia, originally from Hangzhou. This site is where I track how I grow, plus a few ",
+    descBefore: "I'm a second-year Electrical & Electronic Engineering student in Malaysia, originally from Hangzhou. This site is where I track how I grow, plus a few ",
     descLink: "things I built on my own",
     descAfter: '.',
     cta: "See what I'm building",
@@ -131,7 +131,7 @@ export const en: DeepStringify<Dict> = {
 
   baseMeta: {
     title: 'Tu Chenguang',
-    description: "I'm a first-year EEE student in Malaysia, originally from Hangzhou. This site tracks how I grow, plus a few small things I built on my own.",
+    description: "I'm a second-year EEE student in Malaysia, originally from Hangzhou. This site tracks how I grow, plus a few small things I built on my own.",
   },
 
   blog: {

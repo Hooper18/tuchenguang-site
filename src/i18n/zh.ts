@@ -19,7 +19,7 @@ export const zh = {
     name: '涂晨光。',
     taglineLine1: '欢迎来到',
     taglineLine2: '我的世界。',
-    descBefore: '我是一名在马来西亚就读的电子与电气工程大一学生，来自浙江杭州。这里记录我的成长，以及一些',
+    descBefore: '我是一名在马来西亚就读的电子与电气工程大二学生，来自浙江杭州。这里记录我的成长，以及一些',
     descLink: '独立做出来的小东西',
     descAfter: '。',
     cta: '看看我在做什么',
@@ -29,7 +29,7 @@ export const zh = {
     sectionLabel: '关于我',
     p1Before: '你好！我是涂晨光，2025 年 9 月入学',
     p1Strong: '厦门大学马来西亚分校',
-    p1After: '（XMUM），电子与电气工程（EEE）大一学生。',
+    p1After: '（XMUM），电子与电气工程（EEE）大二学生。',
     p2Strong: '浙江杭州',
     p2After: '人，杭州高级中学毕业。',
     p3: '未来方向还在探索中，保研或者申研都在考虑，做这个网站是想记录我的成长，和一些好玩的项目。',
@@ -121,7 +121,7 @@ export const zh = {
 
   baseMeta: {
     title: '涂晨光 Tu Chenguang',
-    description: '我是一名在马来西亚就读的电子与电气工程大一学生，来自浙江杭州。这里记录我的成长，以及一些顺手做出来的小东西。',
+    description: '我是一名在马来西亚就读的电子与电气工程大二学生，来自浙江杭州。这里记录我的成长，以及一些顺手做出来的小东西。',
   },
 
   blog: {
