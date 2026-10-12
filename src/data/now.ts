@@ -23,20 +23,37 @@ export const nowItems: NowItem[] = [
   {
     status: 'done',
     label: STATUS.done,
+    title: { zh: '穷游机票查价', en: 'Budget Flight Fare Finder' },
+    description: { zh: '', en: '' },
+    url: 'https://flightticket.tuchenguang.com',
+  },
+  {
+    status: 'done',
+    label: STATUS.done,
+    title: { zh: '博彩套利探索', en: 'Betting Arbitrage Exploration' },
+    description: { zh: '', en: '' },
+    url: 'https://ezbet.tuchenguang.com',
+  },
+  {
+    status: 'done',
+    label: STATUS.done,
     title: { zh: '世界杯比分预测', en: 'World Cup score predictor' },
     description: { zh: '', en: '' },
+    url: 'https://worldcup.tuchenguang.com',
   },
   {
     status: 'done',
     label: STATUS.done,
     title: { zh: '吉他调音器', en: 'Guitar tuner' },
     description: { zh: '', en: '' },
+    url: 'https://tuner.tuchenguang.com',
   },
   {
     status: 'done',
     label: STATUS.done,
     title: { zh: '台球计分', en: 'Billiards scorer' },
     description: { zh: '', en: '' },
+    url: 'https://billiards.tuchenguang.com',
   },
   {
     status: 'inactive',
