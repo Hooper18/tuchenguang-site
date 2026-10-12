@@ -152,15 +152,15 @@ export const projects: Project[] = [
   },
   {
     slug: 'worldcup',
-    overline: '2026.6',
+    overline: '2026.6–7',
     title: { zh: '世界杯比分预测', en: 'World Cup Predictor' },
     titleHref: 'https://worldcup.tuchenguang.com',
     domain: 'worldcup.tuchenguang.com',
     url: 'https://worldcup.tuchenguang.com',
     github: 'https://github.com/Hooper18/worldcup-sim',
     description: {
-      zh: '2026 美加墨世界杯的比分预测器。Python 引擎重放 1872 年以来的全部国家队比赛自算 Elo，融合 Dixon-Coles 攻防强度与点球模型，对整届赛事跑十万次蒙特卡洛，给出每场比分分布与每队夺冠概率；赛中用定时任务自动回填真实赛果并按需重模拟，追踪夺冠概率演变。前端八个页面的图表全部手绘 SVG，并用跨赛事样本外验证（RPS/Brier）给出诚实的基准对照。',
-      en: "A score predictor for the 2026 World Cup. A Python engine replays every international match since 1872 to compute its own Elo, fuses it with Dixon-Coles attack/defense strength and a penalty model, then runs 100k Monte-Carlo simulations of the whole tournament — a scoreline distribution for every match and each team's title odds. A scheduled job backfills real results mid-tournament and re-simulates on demand, tracking how the odds shift. The front-end renders all eight chart pages as hand-drawn SVG, with honest out-of-sample baselines (RPS/Brier) validated across past tournaments.",
+      zh: '2026 美加墨世界杯的比分预测器，已随赛事收官。Python 引擎重放 1872 年以来的全部国家队比赛自算 Elo，融合 Dixon-Coles 攻防强度与点球模型，对整届赛事跑十万次蒙特卡洛，给出每场比分分布与每队夺冠概率；赛中用定时任务自动回填真实赛果并重模拟，追踪夺冠概率演变。赛前模型把最终冠军西班牙排在第二（16.5%）；全部 104 场的赛前预测 RPS 为 0.153，优于 Elo 基准的 0.161。图表全部手绘 SVG，并用跨赛事样本外验证（RPS/Brier）给出诚实的基准对照。',
+      en: "A score predictor for the 2026 World Cup, now wrapped up with the tournament. A Python engine replays every international match since 1872 to compute its own Elo, fuses it with Dixon-Coles attack/defense strength and a penalty model, then runs 100k Monte-Carlo simulations of the whole tournament — a scoreline distribution for every match and each team's title odds. A scheduled job backfilled real results during the tournament and re-simulated, tracking how the odds shifted. Before kickoff the model ranked eventual champion Spain second (16.5%); across all 104 matches its pre-match forecasts scored an RPS of 0.153, beating the Elo baseline's 0.161. Every chart is hand-drawn SVG, with honest out-of-sample baselines (RPS/Brier) validated across past tournaments.",
     },
     tech: ['Python', 'NumPy', 'SciPy', 'Monte Carlo', 'React', 'TypeScript', 'Vite', 'Tailwind'],
     images: [

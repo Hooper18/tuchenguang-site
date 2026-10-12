@@ -2,7 +2,7 @@ import type { Bilingual } from './_shared';
 export { pickText } from './_shared';
 
 /** 整个 Now 区块最后一次手动整理的时间。组件按 lang 调 formatDate 渲染。 */
-export const nowLastUpdated = new Date('2026-06-12');
+export const nowLastUpdated = new Date('2026-10-12');
 
 export interface NowItem {
   status: 'active' | 'inactive' | 'done';
@@ -16,6 +16,7 @@ const STATUS = {
   done: { zh: '✓ 已完成', en: '✓ Done' },
   active: { zh: '● 进行中', en: '● In progress' },
   inactive: { zh: '○ 已搁置', en: '○ Shelved' },
+  patent: { zh: '● 专利申请中', en: '● Patent pending' },
 } as const;
 
 export const nowItems: NowItem[] = [
@@ -86,11 +87,11 @@ export const nowItems: NowItem[] = [
   },
   {
     status: 'active',
-    label: STATUS.active,
+    label: STATUS.patent,
     title: { zh: 'PCB 艺术画生成器', en: 'PCB-art generator' },
     description: {
-      zh: '不依靠 AI，只依靠 Python。用户上传一张图片，通过拆色、简化等步骤新建一个 PCB 的 .zip 文件，能直接发往嘉立创进行打板。',
-      en: "No AI — just Python. The user uploads an image; the script separates colors, simplifies the shapes, and outputs a PCB .zip ready to send straight to JLCPCB.",
+      zh: '不依靠 AI，只依靠 Python。用户上传一张图片，通过拆色、简化等步骤新建一个 PCB 的 .zip 文件，能直接发往嘉立创进行打板。2026 年 10 月已提交发明专利申请，在等公开。',
+      en: "No AI — just Python. The user uploads an image; the script separates colors, simplifies the shapes, and outputs a PCB .zip ready to send straight to JLCPCB. An invention patent application was filed in October 2026 and is awaiting publication.",
     },
   },
 ];
