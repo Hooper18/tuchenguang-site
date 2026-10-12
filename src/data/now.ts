@@ -94,4 +94,13 @@ export const nowItems: NowItem[] = [
       en: "No AI — just Python. The user uploads an image; the script separates colors, simplifies the shapes, and outputs a PCB .zip ready to send straight to JLCPCB. An invention patent application was filed in October 2026 and is awaiting publication.",
     },
   },
+  {
+    status: 'active',
+    label: STATUS.patent,
+    title: { zh: 'Relay 加速器', en: 'Relay Accelerator' },
+    description: {
+      zh: '一个自用的网络加速工具。我的第二件发明专利申请，正在走流程，细节等公开以后再说。',
+      en: "A network accelerator I built for my own use. It's my second invention patent application, still in the pipeline — details once it's published.",
+    },
+  },
 ];
