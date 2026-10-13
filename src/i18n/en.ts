@@ -40,7 +40,7 @@ export const en: DeepStringify<Dict> = {
     p1After: ' (XMUM), majoring in Electrical & Electronic Engineering (EEE).',
     p2Strong: 'Hangzhou, Zhejiang',
     p2After: ' is home. Graduated from Hangzhou High School.',
-    p3: "Still figuring out what's next — grad school in China or abroad, both on the table. This site is where I keep notes on how I grow, and the projects I have fun with along the way.",
+    p3: "The plan is grad school back in China, through the recommended-admission track. This site is where I keep notes on how I grow, and the projects I have fun with along the way.",
     p4Before: 'Outside of all that — ',
     p4Strong: 'basketball, swimming, travel, motorcycles',
     p4After: '. Long game: financial freedom first, then the rest of the world.',
