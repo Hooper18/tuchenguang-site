@@ -32,7 +32,6 @@ export const nowItems: NowItem[] = [
     label: STATUS.done,
     title: { zh: '博彩套利探索', en: 'Betting Arbitrage Exploration' },
     description: { zh: '', en: '' },
-    url: 'https://ezbet.tuchenguang.com',
   },
   {
     status: 'done',

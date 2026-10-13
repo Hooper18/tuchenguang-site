@@ -2,14 +2,14 @@ import { describe, expect, it } from 'vitest';
 import { nowItems } from './now';
 
 describe('now completed project links', () => {
-  const expectedCompletedProjects = [
+  const expectedCompletedProjects: { title: { zh: string; en: string }; url?: string }[] = [
     {
       title: { zh: '穷游机票查价', en: 'Budget Flight Fare Finder' },
       url: 'https://flightticket.tuchenguang.com',
     },
     {
+      // ezbet 站点需要登录才能访问，暂不放链接
       title: { zh: '博彩套利探索', en: 'Betting Arbitrage Exploration' },
-      url: 'https://ezbet.tuchenguang.com',
     },
     {
       title: { zh: '世界杯比分预测', en: 'World Cup score predictor' },
@@ -25,7 +25,7 @@ describe('now completed project links', () => {
     },
   ];
 
-  it('keeps the five linked completed projects at the top in display order', () => {
+  it('keeps the five completed projects at the top in display order', () => {
     expect(
       nowItems.slice(0, expectedCompletedProjects.length).map((item) => ({
         status: item.status,
